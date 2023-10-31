@@ -1,9 +1,0 @@
-Compacto,130000
-Sedán,160000
-Lujoso,400000
-Eléctrico,250000
-Deportivo,280000
-Todoterreno,180000
-SUV,200000
-Minivan,120000
-Superdeportivo,300000
