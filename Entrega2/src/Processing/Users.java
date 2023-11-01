@@ -20,6 +20,7 @@ public class Users {
 	
 	public static User registerNewUser(String login, String password, int access, String workplace) {
 
+		if (logins.containsKey(login)) return null;
 		User created = new User(login, password, access, workplace);
 		logins.put(password, created);
 		RentalWriter.newUser(created);
@@ -29,6 +30,7 @@ public class Users {
 
 	public static User registerNewUser(String login, String password, int access, String login2, String password2) {
 		
+		if (logins.containsKey(login)) return null;
 		Scanner scan = new Scanner(System.in);
 		User user = loadUser(login2, password2);
 		String workplace = user.getWorkplace();
