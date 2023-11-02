@@ -7,7 +7,7 @@ import javax.swing.*;
 public class ChangePersonalInformation extends JPanel {
 
 
-    public ChangePersonalInformation()
+    public ChangePersonalInformation(String login, String password)
     {
         JPanel changePersonalInfoPanel = new JPanel(new GridLayout(3,1));
 
@@ -16,7 +16,7 @@ public class ChangePersonalInformation extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                JPanel personalInfoPanel = new PersonalInformation();
+                JPanel personalInfoPanel = new PersonalInformation( login, password);
                 
 
             }
@@ -29,7 +29,7 @@ public class ChangePersonalInformation extends JPanel {
         {
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                JPanel changePaymentMethodPanel = new ChangePaymentMethod();
+                JPanel changePaymentMethodPanel = new ChangePaymentMethod(login, password);
             }
            
 
@@ -42,7 +42,7 @@ public class ChangePersonalInformation extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                JPanel changeLicence = new ChangeLicence();
+                JPanel changeLicence = new ChangeLicence(login, password);
             }
             
         });

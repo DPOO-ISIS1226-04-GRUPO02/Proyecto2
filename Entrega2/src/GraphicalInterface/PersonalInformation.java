@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class PersonalInformation extends JPanel {
 
-    public PersonalInformation()
+    public PersonalInformation(String login, String password)
     {
         JPanel personalInfoPanel = new JPanel();
 
@@ -29,7 +29,7 @@ public class PersonalInformation extends JPanel {
             String selectedOption = (String) optionsComboBox.getSelectedItem();
             String infoString = changeInfoField.getText();
 
-            CarRental.modifyClient(login, selectedOption, infoString);
+            CarRental.modifyInfoClient(login, selectedOption, infoString);
 
             }
             

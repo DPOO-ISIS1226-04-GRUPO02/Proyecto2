@@ -10,7 +10,7 @@ import Processing.Users;
 
 public class RegisterEmployee extends JPanel{
 
-   public RegisterEmployee()
+   public RegisterEmployee(String login, String password)
    {
     JPanel registerEmployeePanel = new JPanel(new GridLayout(2, 1));
 

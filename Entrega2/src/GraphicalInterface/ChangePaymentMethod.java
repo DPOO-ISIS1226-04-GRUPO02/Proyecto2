@@ -13,7 +13,7 @@ import Processing.CarRental;
 
 public class ChangePaymentMethod extends JPanel{
 
-    public ChangePaymentMethod(){
+    public ChangePaymentMethod(String login, String password){
 
     
     JPanel changePaymentMethodPanel = new JPanel();

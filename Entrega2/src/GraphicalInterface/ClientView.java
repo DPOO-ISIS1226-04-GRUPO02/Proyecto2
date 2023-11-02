@@ -13,6 +13,7 @@ public class ClientView extends JPanel {
         this.password = password;
 
         // TODO: Construct the Panel with its attributes and specificities
+        
 
     }
     

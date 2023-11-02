@@ -13,7 +13,7 @@ import Processing.CarRental;
 
 public class ChangeLicence extends JPanel{
 
-    public ChangeLicence()
+    public ChangeLicence(String login, String password)
     {
         JPanel changeLicencePanel = new JPanel();
 
@@ -61,7 +61,7 @@ public class ChangeLicence extends JPanel{
                 Calendar licenceExpiration = Calendar.getInstance();
                 licenceExpiration.set(calendarValues[0], calendarValues[1], calendarValues[2], 0, 0, 0);
 
-                CarRental.modifyLicence(login,licenceExpirationString, licenceNumber, licenceCountry, licenceExpiration, licencePhotoPath);
+                CarRental.modifyLicence(login, licenceNumber, licenceCountry, licenceExpiration, licencePhotoPath);
 
 
 
