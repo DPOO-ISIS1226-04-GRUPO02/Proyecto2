@@ -6,33 +6,47 @@ import javax.swing.*;
 
 public class ChangePersonalInformation extends JPanel {
 
-    
 
     public ChangePersonalInformation()
     {
         JPanel changePersonalInfoPanel = new JPanel(new GridLayout(3,1));
 
-        JButton cambiarInfoPersonalButton = new JButton("Cambiar Información Personal");
-        cambiarInfoPersonalButton.addActionListener(new ActionListener() {
-
+        JButton changePersonalInformationButton = new JButton("Cambiar Infromación Personal");
+        changePersonalInformationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO definir que hacer, si hacer paneles aca dentro para cada uno
-            JLabel labelOpciones = new JLabel("Información a cambiar:");
+                
+                JPanel personalInfoPanel = new PersonalInformation();
+                
 
-            String[] opciones = {"Nombre", "Celular", "E-mail", "Id Photo Path"}
-
-             JComboBox opcionesComboBox = new JComboBox<>();
-             
             }
             
         });
+        changePersonalInfoPanel.add(changePersonalInformationButton);
 
+        JButton changePaymentMethodButton = new JButton("Cambiar Metodo de Pago");
+        changePaymentMethodButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                JPanel changePaymentMethodPanel = new ChangePaymentMethod();
+            }
+           
 
+        });
+        changePersonalInfoPanel.add(changePaymentMethodButton);
 
-        JButton cambiarMetodoDePagoButton = new JButton("Cambiar Metodo de Pago");
-        JButton cambiarLicenciaButton= new JButton("Cambiar Información Licencia");
+        JButton changeLicenceButton= new JButton("CambiarInformación Licencia"); 
+        changeLicenceButton.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                JPanel changeLicence = new ChangeLicence();
+            }
+            
+        });
+        changePersonalInfoPanel.add(changeLicenceButton);
 
     
 

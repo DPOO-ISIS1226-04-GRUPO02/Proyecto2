@@ -148,90 +148,52 @@ public class CarRental {
 		
 	}
 
-	public static void modifyClient(String login, Scanner scan) {
+	public static void modifyInfoClient(String login, String selectedInfo, String infoString) {
 
-		System.out.println("¿Qué desea modificar de su perfil?");
-		System.out.println("1. Nombre");
-		System.out.println("2. Teléfono");
-		System.out.println("3. Email");
-		System.out.println("4. Foto de identificación");
-		System.out.println("5. Método de pago");
-		System.out.println("6. Licencia");
-		byte response = scan.nextByte();
-		byte i = 0;
-		Integer[] calendarValues = {0, 0, 0};
+		
 		Client client = getClient(login);
-		switch (response) {
 
-			case 1:
-				System.out.println("Ingrese el nuevo valor para 'nombre': ");
-				String name = scan.nextLine();
-				client.setName(name);
-				break;
-			case 2:
-				System.out.println("Ingrese el nuevo valor para 'teléfono': ");
-				long phone = scan.nextLong();
-				client.setPhone(phone);
-				break;
-			case 3:
-				System.out.println("Ingrese el nuevo valor para 'email': ");
-				String email = scan.nextLine();
-				client.setEmail(email);
-				break;
-			case 4:
-				System.out.println("Ingrese el nuevo camino de la foto de identificación: ");
-				String newPath = scan.nextLine();
-				client.setIdPhotoPath(newPath);
-				break;
-			case 5:
-				System.out.println("Ingrese el número de su tarjeta de crédito: ");
-				long cardNumber = scan.nextLong();
-				System.out.println("Ingrese la fecha de expiración de su tarjeta (dd/mm/aaaa): ");
-				String cardExpiratioString = scan.nextLine();
-				for (String value: cardExpiratioString.split("/")) {
-
-					calendarValues[i] = Integer.parseInt(value);
-					i += 1;
-
-				}
-				Calendar cardExpiration = Calendar.getInstance();
-				cardExpiration.set(calendarValues[0], calendarValues[1], calendarValues[2], 0, 0, 0);
-				System.out.println("Ingrese el código trasero de la tarjeta de crédito: ");
-				short cardCode = scan.nextShort();
-				System.out.println("Ingrese el nombre del dueño de la tarjeta de crédito: ");
-				String cardOwner = scan.nextLine();
-				System.out.println("Ingrese la dirección de facturación de la tarjeta: ");
-				String cardAddress = scan.nextLine();
-				client.setPayment(new Payment(cardNumber, cardExpiration, cardCode, cardOwner, cardAddress));
-			case 6:
-				System.out.println("-- DATOS DE LA LICENCIA DE CONDUCCION --");
-				System.out.println("Ingrese el número de la licencia: ");
-				long licenceNumber = scan.nextLong();
-				System.out.println("Ingrese el país en que se expidió la licencia: ");
-				String licenceCountry = scan.nextLine();
-				System.out.println("Ingrese la fecha de expiración de su licencia (dd/mm/aaaa): ");
-				String licenceExpiratioString = scan.nextLine();
-				for (String value: licenceExpiratioString.split("/")) {
-									
-					calendarValues[i] = Integer.parseInt(value);
-					i += 1;
-									
-				}
-				Calendar licenceExpiration = Calendar.getInstance();
-				licenceExpiration.set(calendarValues[0], calendarValues[1], calendarValues[2], 0, 0, 0);
-				System.out.println("Ingrese la ubicación de la foto de su licencia (en el computador): ");
-				String licencePhotoPath = scan.nextLine(); 
-				Licence licence = new Licence(licenceNumber, licenceCountry, licenceExpiration, licencePhotoPath);
-				if (clientExists(login)) getClient(login).setLicence(licence);
-				break;
-			default:
-				System.out.println("Option not found.");
-				break;
-
+		if (selectedInfo.equals("Nombre"))
+		{
+			client.setName(infoString);
 		}
+		if (selectedInfo.equals("Teléfono"))
+		{
+			long phone = Long.parseLong(infoString);
+			client.setPhone(phone);
+		}
+		if (selectedInfo.equals("Email"))
+		{
+			client.setEmail(infoString);
+		}
+		if (selectedInfo.equals("Id Photo Path"))
+		{
+			client.setIdPhotoPath(infoString);
+		}
+
 		RentalWriter.changeClientInformation(client);
 
 	}
+
+	public static void modifyPaymentMethod(String login, long cardNumber, Calendar cardExpiration, short cardCode, String cardOwner, String cardAddress ) {
+
+		Client client = getClient(login);
+		client.setPayment(new Payment(cardNumber, cardExpiration, cardCode, cardOwner, cardAddress));
+		RentalWriter.changeClientInformation(client);
+
+		
+	}
+
+	public static void modifyLicence (String login, long number, String country, Calendar expiration, String photoPath)
+	{
+		Client client = getClient(login);
+		Licence licence = new Licence(number, country, expiration, photoPath);
+		client.setLicence(licence);
+		RentalWriter.changeClientInformation(client);
+
+	}
+		
+	
 
 	public static void reserveCar(String renter, String category, String origin, String destination,
 		Calendar pickUpDateTime, Calendar returnDateTime, int n, Scanner scan) throws ParseException {
