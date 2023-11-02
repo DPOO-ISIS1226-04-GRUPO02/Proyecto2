@@ -57,7 +57,6 @@ public class UserSelection extends JFrame {
                 try {
                     int access = Users.loadUser(username.getText(), password.getText()).getAccess();
                     setVisible(false);
-                    mi.setVisible(true);
                     mi.loadView(access, username.getText(), password.getText());
                 } catch (Exception ex) {
                     new ErrorDialog("Este usuario y esta contraseña no coinciden.", userSelection);
