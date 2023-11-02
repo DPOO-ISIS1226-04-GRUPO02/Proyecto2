@@ -11,8 +11,12 @@ import java.awt.*;
 
 public class PersonalInformation extends JPanel {
 
-    public PersonalInformation()
+    String login;
+
+    public PersonalInformation(String login)
     {
+        this.login = login;
+
         JPanel personalInfoPanel = new JPanel();
 
         JLabel labelOptions = new JLabel("Información a cambiar:"); 
