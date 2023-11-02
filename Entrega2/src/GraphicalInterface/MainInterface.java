@@ -6,7 +6,6 @@ import java.awt.event.*;
 
 public class MainInterface extends JFrame {
 
-    UserSelection userSelection;
     ClientView clientView;
     EmployeeView employeeView;
     LManagerView lManagerView;
@@ -26,15 +25,15 @@ public class MainInterface extends JFrame {
             }
         });
 
-        this.userSelection = new UserSelection();
-        this.clientView = new ClientView();
-        this.employeeView = new EmployeeView();
-        this.lManagerView = new LManagerView();
-        this.gManagerView = new GManagerView();
+    }
 
-        
+    void loadView(int access, String username, String password) {
+
+        switch (access) {
+            case 0:
 
 
+        }
 
     }
 

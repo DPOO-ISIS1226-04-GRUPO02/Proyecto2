@@ -32,24 +32,30 @@ public class Users {
 		
 		if (logins.containsKey(login)) return null;
 		Scanner scan = new Scanner(System.in);
-		User user = loadUser(login2, password2);
-		String workplace = user.getWorkplace();
-		if (workplace.equals(null)) {
-			System.out.println("Ingrese la tienda en la que va a trabajar esta persona: ");
-			while (CarRental.getStore(workplace).equals(null)) {
-				System.out.println("Esta tienda no se ha encontrado. Ingrese el nombre nuevamente: ");
-				workplace = scan.nextLine();
+		User created = null;
+		try {
+			User user = loadUser(login2, password2);
+			String workplace = user.getWorkplace();
+			if (workplace.equals(null)) {
+				System.out.println("Ingrese la tienda en la que va a trabajar esta persona: ");
+				while (CarRental.getStore(workplace).equals(null)) {
+					System.out.println("Esta tienda no se ha encontrado. Ingrese el nombre nuevamente: ");
+					workplace = scan.nextLine();
+				}
 			}
+			created = new User(login, password, access, workplace);
+			logins.put(login, created);
+			scan.close();
+			RentalWriter.newUser(user);
+		} catch (Exception e) {
+			System.out.println("No existe este usuario");
 		}
-		User created = new User(login, password, access, workplace);
-		logins.put(login, created);
-		scan.close();
-		RentalWriter.newUser(user);
+		
 		return created;
 		
 	}
 	
-	public static User loadUser(String username, String password) {
+	public static User loadUser(String username, String password) throws Exception {
 		
 		User possibility = logins.get(username);
 		if (possibility.getPassword().equals(password)) return possibility;
