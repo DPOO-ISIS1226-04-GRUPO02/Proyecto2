@@ -6,7 +6,6 @@ import java.awt.event.*;
 
 public class MainInterface extends JFrame {
 
-    UserSelection userSelection;
     ClientView clientView;
     EmployeeView employeeView;
     LManagerView lManagerView;
@@ -26,15 +25,35 @@ public class MainInterface extends JFrame {
             }
         });
 
-        this.userSelection = new UserSelection();
-        this.clientView = new ClientView();
-        this.employeeView = new EmployeeView();
-        this.lManagerView = new LManagerView();
-        this.gManagerView = new GManagerView();
+    }
 
-        
+    void loadView(int access, String username, String password) {
 
-
+        switch (access) {
+            case 0:
+                clientView = new ClientView(username, password);
+                add(clientView, BorderLayout.SOUTH);
+                setVisible(true);
+                break;
+            case 1:
+                employeeView = new EmployeeView(username, password);
+                add(employeeView, BorderLayout.SOUTH);
+                setVisible(true);
+                break;
+            case 2:
+                lManagerView = new LManagerView(username, password);
+                add(lManagerView, BorderLayout.SOUTH);
+                setVisible(true);
+                break;
+            case 3:
+                gManagerView = new GManagerView(username, password);
+                add(gManagerView, BorderLayout.SOUTH);
+                setVisible(true);
+                break;
+            default:
+                new ErrorDialog("No se encontró este acceso", this);
+                break;
+        }
 
     }
 

@@ -51,9 +51,12 @@ public class UserSelection {
 		String username = scan.nextLine();
 		System.out.print("\nIngrese su contraseña: ");
 		String password = scan.nextLine();
-		User current = Users.loadUser(username, password);
-		if (current.equals(null)) System.out.println("Ingreso incorrecto!");
-		else initializeView(current, scan);
+		try {
+			User current = Users.loadUser(username, password);
+			initializeView(current, scan);
+		} catch (Exception e) {
+			System.out.println("Ingreso incorrecto!");
+		}
 		
 	}
 	

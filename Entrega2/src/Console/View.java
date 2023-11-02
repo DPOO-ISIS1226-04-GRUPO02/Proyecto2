@@ -240,6 +240,8 @@ public class View {
 					CarRental.confirmPickUp(clientLogin, Users.loadUser(login, password).getWorkplace(), scan);
 				} catch (ParseException pe) {
 					System.out.println("Se ha encontrado un error con el formato de la fecha " + pe);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 				break;
 			case 4:
