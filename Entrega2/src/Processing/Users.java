@@ -32,13 +32,7 @@ public class Users {
 		Scanner scan = new Scanner(System.in);
 		User user = loadUser(login2, password2);
 		String workplace = user.getWorkplace();
-		if (workplace.equals(null)) {
-			System.out.println("Ingrese la tienda en la que va a trabajar esta persona: ");
-			while (CarRental.getStore(workplace).equals(null)) {
-				System.out.println("Esta tienda no se ha encontrado. Ingrese el nombre nuevamente: ");
-				workplace = scan.nextLine();
-			}
-		}
+		
 		User created = new User(login, password, access, workplace);
 		logins.put(login, created);
 		scan.close();
