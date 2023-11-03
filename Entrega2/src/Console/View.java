@@ -164,7 +164,7 @@ public class View {
 						cardExpiration, cardCode, cardOwner, cardAddress, login, licenceNumber, licenceCountry, 
 						licenceExpiration, licencePhotoPath);
 				} else {		
-					CarRental.modifyClient(login, scan);
+					// CarRental.modifyInfoClient(login, scan);
 				}
 				break;
 			case 2:

@@ -1,5 +1,7 @@
 package GraphicalInterface;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -13,47 +15,56 @@ import Processing.CarRental;
 
 public class ChangePaymentMethod extends JPanel{
 
-    public ChangePaymentMethod(String login, String password){
+    public ChangePaymentMethod(String login)
+    {
 
-    
-    JPanel changePaymentMethodPanel = new JPanel();
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
 
+        JLabel cardNumberLabel = new JLabel("Número Tarjeta: ");
+        JTextField cardNumberField = new JTextField(20);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        add(cardNumberLabel, constraints);
+        constraints.gridx = 1;
+        add(cardNumberField, constraints);
 
-    JLabel cardNumberLabel = new JLabel("Número Tarjeta: ");
-    JTextField cardNumberField = new JTextField();
+        JLabel cardCodeLabel = new JLabel("Código CVV: ");
+        JTextField cardCodeField = new JTextField(5);
+        constraints.gridx = 2;
+        add(cardCodeLabel, constraints);
+        constraints.gridx = 3;
+        add(cardCodeField, constraints);
 
-    JLabel cardCodeLabel = new JLabel("Código CVV: ");
-    JTextField cardCodeField = new JTextField();
+        JLabel cardOwnerLabel = new JLabel("Nombre en la Tarjeta: ");
+        JTextField cardOwnerField = new JTextField(20);
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        add(cardOwnerLabel, constraints);
+        constraints.gridx = 1;
+        add(cardOwnerField, constraints);
 
-    JLabel cardOwnerLabel = new JLabel("Nombre ne la Tarjeta: ");
-    JTextField cardOwnerField = new JTextField();
+        JLabel cardExpirationLabel = new JLabel("Fecha de Vencimiento Tarjeta: ");
+        JTextField cardExpirationField = new JTextField("dd/mm/aaaa", 10);
+        constraints.gridx = 2;
+        add(cardExpirationLabel, constraints);
+        constraints.gridx = 3;
+        add(cardExpirationField, constraints);
 
-    JLabel cardExpirationLabel = new JLabel("Fecha de Vencimiento Tarjeta: ");
-    JTextField cardExpirationField = new JTextField("dd/mm/aaaa");
+        JLabel cardAddressLabel = new JLabel("Dirección: ");
+        JTextField cardAddressField = new JTextField(30);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.gridwidth = 2;
+        add(cardAddressLabel, constraints);
+        constraints.gridx = 2;
+        add(cardAddressField, constraints);
 
-    JLabel cardAddressLabel = new JLabel("Dirección: ");
-    JTextField cardAddressField = new JTextField();
-
-    
-
-    changePaymentMethodPanel.add(cardNumberLabel);
-    changePaymentMethodPanel.add(cardNumberField);
-
-    changePaymentMethodPanel.add(cardCodeLabel);
-    changePaymentMethodPanel.add(cardCodeField);
-
-    changePaymentMethodPanel.add(cardOwnerLabel);
-    changePaymentMethodPanel.add(cardOwnerField);
-
-    changePaymentMethodPanel.add(cardExpirationLabel);
-    changePaymentMethodPanel.add(cardExpirationField);
-
-    changePaymentMethodPanel.add(cardAddressLabel);
-    changePaymentMethodPanel.add(cardAddressField);
-
-    JButton okButton = new JButton("Aceptar");
-        okButton.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent e) {
+        JButton okButton = new JButton("Aceptar");
+        okButton.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
             String cardNumberStr = cardNumberField.getText();
             long cardNumber = Long.parseLong(cardNumberStr);
             String cardExpirationString = cardExpirationField.getText();
@@ -65,21 +76,20 @@ public class ChangePaymentMethod extends JPanel{
             //cambiar cardExpirationStr a Calendar
             Integer[] calendarValues = {0, 0, 0}; 
             byte i = 0;
-			for (String value: cardExpirationString.split("/")) {
+			for (String value: cardExpirationString.split("/")) 
+            {
 				calendarValues[i] = Integer.parseInt(value);
 				i += 1;
-				}
+			}
 			Calendar cardExpiration = Calendar.getInstance();
-
 			cardExpiration.set(calendarValues[0], calendarValues[1], calendarValues[2], 0, 0, 0);
-                
+
             CarRental.modifyPaymentMethod(login, cardNumber, cardExpiration, cardCode, cardOwner, cardAddress);
-
             }
-            
-            });
-            changePaymentMethodPanel.add(okButton);
-
-
+        });
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        constraints.gridwidth = 4;
+        add(okButton, constraints);
 
 }}

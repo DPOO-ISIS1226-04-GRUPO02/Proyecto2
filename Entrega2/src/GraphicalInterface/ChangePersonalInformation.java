@@ -6,55 +6,41 @@ import javax.swing.*;
 
 public class ChangePersonalInformation extends JPanel {
 
-
-    public ChangePersonalInformation(String login, String password)
+    public ChangePersonalInformation(String login)
     {
-        JPanel changePersonalInfoPanel = new JPanel(new GridLayout(3,1));
+        setLayout(new GridLayout(3,1));
 
         JButton changePersonalInformationButton = new JButton("Cambiar Infromación Personal");
-        changePersonalInformationButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                JPanel personalInfoPanel = new PersonalInformation( login, password);
-                
-
+        changePersonalInformationButton.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                JPanel personalInfoPanel = new PersonalInformation(login);
             }
             
         });
-        changePersonalInfoPanel.add(changePersonalInformationButton);
+        add(changePersonalInformationButton);
 
         JButton changePaymentMethodButton = new JButton("Cambiar Metodo de Pago");
         changePaymentMethodButton.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                JPanel changePaymentMethodPanel = new ChangePaymentMethod(login, password);
+            public void actionPerformed(ActionEvent e) 
+            {
+                JPanel changePaymentMethodPanel = new ChangePaymentMethod(login);
             }
-           
-
         });
-        changePersonalInfoPanel.add(changePaymentMethodButton);
+        add(changePaymentMethodButton);
 
-        JButton changeLicenceButton= new JButton("CambiarInformación Licencia"); 
-        changeLicenceButton.addActionListener(new ActionListener() {
+        JButton changeLicenceButton= new JButton("Cambiar Licencia"); 
+        changeLicenceButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                JPanel changeLicence = new ChangeLicence(login);
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                JPanel changeLicence = new ChangeLicence(login, password);
-            }
-            
+            }  
         });
-        changePersonalInfoPanel.add(changeLicenceButton);
-
-    
-
-
-
-        
-        
-
+        add(changeLicenceButton);
     }
         
 }

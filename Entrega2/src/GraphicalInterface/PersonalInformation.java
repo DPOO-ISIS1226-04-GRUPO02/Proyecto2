@@ -2,44 +2,39 @@ package GraphicalInterface;
 
 import javax.swing.*;
 
+import java.awt.FlowLayout;
+import java.awt.event.*;
 
 import Processing.CarRental;
 
-import java.awt.*;
-    import java.awt.event.ActionEvent;
-    import java.awt.event.ActionListener;
-
 public class PersonalInformation extends JPanel {
 
-    public PersonalInformation(String login, String password)
+    public PersonalInformation(String login)
     {
-        JPanel personalInfoPanel = new JPanel();
+        setLayout(new FlowLayout());
+        setSize(getPreferredSize());
 
         JLabel labelOptions = new JLabel("Información a cambiar:"); 
-
         String[] options = {"Nombre", "Teléfono", "Email", "Id Photo Path"};
         JComboBox<Object> optionsComboBox = new JComboBox<>(options); 
-
         JTextField changeInfoField = new JTextField();
+        JButton okButton = new JButton("Aceptar");
 
-        optionsComboBox.addActionListener(new ActionListener()
+        okButton.addActionListener(new ActionListener()
         {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            String selectedOption = (String) optionsComboBox.getSelectedItem();
-            String infoString = changeInfoField.getText();
-
-            CarRental.modifyInfoClient(login, selectedOption, infoString);
-
+            public void actionPerformed(ActionEvent e) 
+            {
+                String selectedOption = (String) optionsComboBox.getSelectedItem();
+                String infoString = changeInfoField.getText();
+                CarRental.modifyInfoClient(login, selectedOption, infoString);
             }
-            
         }
         );
 
- 
-        
-
-
+        add(labelOptions);
+        add(optionsComboBox);
+        add(changeInfoField);
+        add(okButton);
     }
     
 }

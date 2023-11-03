@@ -7,8 +7,8 @@ public class ErrorDialog extends JOptionPane {
     
     ErrorDialog(String message, JFrame parent) {
         
-        showMessageDialog(parent, message);
-
+        showMessageDialog(parent, message, "Error", JOptionPane.ERROR_MESSAGE);
+        
     }
 
 }
