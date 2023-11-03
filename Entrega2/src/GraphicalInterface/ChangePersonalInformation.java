@@ -6,13 +6,9 @@ import javax.swing.*;
 
 public class ChangePersonalInformation extends JPanel {
 
-    String login;
 
-    public ChangePersonalInformation(String login)
+    public ChangePersonalInformation()
     {
-
-        this.login = login;
-
         JPanel changePersonalInfoPanel = new JPanel(new GridLayout(3,1));
 
         JButton changePersonalInformationButton = new JButton("Cambiar Infromación Personal");
@@ -20,7 +16,7 @@ public class ChangePersonalInformation extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                JPanel personalInfoPanel = new PersonalInformation(login);
+                JPanel personalInfoPanel = new PersonalInformation();
                 
 
             }
@@ -33,7 +29,7 @@ public class ChangePersonalInformation extends JPanel {
         {
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                JPanel changePaymentMethodPanel = new ChangePaymentMethod(login);
+                JPanel changePaymentMethodPanel = new ChangePaymentMethod();
             }
            
 
@@ -46,7 +42,7 @@ public class ChangePersonalInformation extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                JPanel changeLicence = new ChangeLicence(login);
+                JPanel changeLicence = new ChangeLicence();
             }
             
         });

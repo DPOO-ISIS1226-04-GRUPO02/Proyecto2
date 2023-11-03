@@ -28,12 +28,8 @@ public class RegisterPersonalInformation extends JPanel{
     private JTextField cardExpirationField;
     private JTextField cardAddressField;
 
-    String login;
-
-    public RegisterPersonalInformation(String login)
+    public RegisterPersonalInformation()
     {
-
-        this.login = login;
         
         setSize(500, 500);
         
