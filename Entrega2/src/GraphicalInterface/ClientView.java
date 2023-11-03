@@ -11,13 +11,14 @@ public class ClientView extends JPanel {
 
     private ChangePersonalInformation personal;
     private RegisterPersonalInformation register;
-    // TODO: Add missing car panel
+    private ReserveCar reserve;
 
     ClientView(String login, JFrame main) 
     {
         JPanel panel = this;
         personal = new ChangePersonalInformation(login, this);
         register = new RegisterPersonalInformation(login, main, this);
+        reserve = new ReserveCar(login, main, this);
 
         setLayout(new CardLayout());
         JPanel mainCard = new JPanel();
@@ -60,8 +61,7 @@ public class ClientView extends JPanel {
         add(mainCard, "Main");
         add(register, "Register");
         add(personal, "Personal");
-        // TODO: Add reserve panel
-        // add(reserve, "Reserve");
+        add(reserve, "Reserve");
 
     }
 
