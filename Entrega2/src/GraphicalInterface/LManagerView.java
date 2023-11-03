@@ -3,14 +3,10 @@ package GraphicalInterface;
 import javax.swing.*;
 
 public class LManagerView extends JPanel {
-    
-    private String login;
-    private String password;
 
-    LManagerView(String login, String password) {
+    LManagerView(String login, String password, JFrame main) 
+    {
 
-        this.login = login;
-        this.password = password;
 
         // TODO: Construct the Panel with its attributes and specificities
 

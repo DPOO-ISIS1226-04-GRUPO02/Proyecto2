@@ -15,7 +15,7 @@ import Processing.CarRental;
 
 public class ChangePaymentMethod extends JPanel{
 
-    public ChangePaymentMethod(String login)
+    public ChangePaymentMethod(String login, ChangePersonalInformation main)
     {
 
         setLayout(new GridBagLayout());
@@ -85,6 +85,7 @@ public class ChangePaymentMethod extends JPanel{
 			cardExpiration.set(calendarValues[0], calendarValues[1], calendarValues[2], 0, 0, 0);
 
             CarRental.modifyPaymentMethod(login, cardNumber, cardExpiration, cardCode, cardOwner, cardAddress);
+            main.showMain();
             }
         });
         constraints.gridx = 0;

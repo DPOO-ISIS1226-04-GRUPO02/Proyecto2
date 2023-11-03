@@ -15,7 +15,7 @@ import Processing.CarRental;
 
 public class ChangeLicence extends JPanel{
 
-    public ChangeLicence(String login)
+    public ChangeLicence(String login, ChangePersonalInformation main)
     {
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -73,6 +73,7 @@ public class ChangeLicence extends JPanel{
                 licenceExpiration.set(calendarValues[0], calendarValues[1], calendarValues[2], 0, 0, 0);
 
                 CarRental.modifyLicence(login, licenceNumber, licenceCountry, licenceExpiration, licencePhotoPath);
+                main.showMain();
              }
         });
         constraints.gridx = 0;

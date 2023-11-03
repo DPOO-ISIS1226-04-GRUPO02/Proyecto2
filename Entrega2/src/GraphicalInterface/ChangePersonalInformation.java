@@ -6,41 +6,76 @@ import javax.swing.*;
 
 public class ChangePersonalInformation extends JPanel {
 
-    public ChangePersonalInformation(String login)
+    private JPanel personalInfoPanel;
+    private JPanel changePaymentMethodPanel;
+    private JPanel changeLicence;
+
+    public ChangePersonalInformation(String login, ClientView client)
     {
-        setLayout(new GridLayout(3,1));
+        ChangePersonalInformation panel = this;
+        setLayout(new CardLayout());
+        JPanel mainCard = new JPanel();
+        mainCard.setLayout(new FlowLayout());
+
+        personalInfoPanel = new PersonalInformation(login, this);
+        changePaymentMethodPanel = new ChangePaymentMethod(login, this);
+        changeLicence = new ChangeLicence(login, this);
 
         JButton changePersonalInformationButton = new JButton("Cambiar Infromación Personal");
         changePersonalInformationButton.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e) 
             {
-                JPanel personalInfoPanel = new PersonalInformation(login);
+                CardLayout cardLayout = (CardLayout) panel.getLayout();
+                cardLayout.show(panel, "Personal");
             }
             
         });
-        add(changePersonalInformationButton);
+        mainCard.add(changePersonalInformationButton);
 
         JButton changePaymentMethodButton = new JButton("Cambiar Metodo de Pago");
         changePaymentMethodButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
             {
-                JPanel changePaymentMethodPanel = new ChangePaymentMethod(login);
+                CardLayout cardLayout = (CardLayout) panel.getLayout();
+                cardLayout.show(panel, "Payment");
             }
         });
-        add(changePaymentMethodButton);
+        mainCard.add(changePaymentMethodButton);
 
         JButton changeLicenceButton= new JButton("Cambiar Licencia"); 
         changeLicenceButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) 
             {
-                JPanel changeLicence = new ChangeLicence(login);
-
+                CardLayout cardLayout = (CardLayout) panel.getLayout();
+                cardLayout.show(panel, "Licence");
             }  
         });
-        add(changeLicenceButton);
+        mainCard.add(changeLicenceButton);
+
+        JButton back = new JButton("Atrás");
+        back.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                client.showMain();
+            }
+        });
+        mainCard.add(back);
+
+        add(mainCard, "Main");
+        add(personalInfoPanel, "Personal");
+        add(changePaymentMethodPanel, "Payment");
+        add(changeLicence, "Licence");
+
+    }
+
+    void showMain() 
+    {
+        CardLayout cardLayout = (CardLayout) getLayout();
+        cardLayout.show(this, "Main");
     }
         
 }

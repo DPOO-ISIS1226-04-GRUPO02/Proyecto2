@@ -9,7 +9,7 @@ import Processing.CarRental;
 
 public class PersonalInformation extends JPanel {
 
-    public PersonalInformation(String login)
+    public PersonalInformation(String login, ChangePersonalInformation main)
     {
         setLayout(new FlowLayout());
         setSize(getPreferredSize());
@@ -27,6 +27,7 @@ public class PersonalInformation extends JPanel {
                 String selectedOption = (String) optionsComboBox.getSelectedItem();
                 String infoString = changeInfoField.getText();
                 CarRental.modifyInfoClient(login, selectedOption, infoString);
+                main.showMain();
             }
         }
         );
