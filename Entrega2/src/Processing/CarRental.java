@@ -148,9 +148,8 @@ public class CarRental {
 		
 	}
 
-	public static void modifyInfoClient(String login, String selectedInfo, String infoString) {
-
-		
+	public static void modifyInfoClient(String login, String selectedInfo, String infoString) 
+	{	
 		Client client = getClient(login);
 
 		if (selectedInfo.equals("Nombre"))
@@ -175,13 +174,11 @@ public class CarRental {
 
 	}
 
-	public static void modifyPaymentMethod(String login, long cardNumber, Calendar cardExpiration, short cardCode, String cardOwner, String cardAddress ) {
-
+	public static void modifyPaymentMethod(String login, long cardNumber, Calendar cardExpiration, short cardCode, String cardOwner, String cardAddress )
+	{
 		Client client = getClient(login);
 		client.setPayment(new Payment(cardNumber, cardExpiration, cardCode, cardOwner, cardAddress));
-		RentalWriter.changeClientInformation(client);
-
-		
+		RentalWriter.changeClientInformation(client);		
 	}
 
 	public static void modifyLicence (String login, long number, String country, Calendar expiration, String photoPath)
@@ -190,14 +187,11 @@ public class CarRental {
 		Licence licence = new Licence(number, country, expiration, photoPath);
 		client.setLicence(licence);
 		RentalWriter.changeClientInformation(client);
-
 	}
-		
-	
 
 	public static void reserveCar(String renter, String category, String origin, String destination,
-		Calendar pickUpDateTime, Calendar returnDateTime, int n, Scanner scan) throws ParseException {
-
+		Calendar pickUpDateTime, Calendar returnDateTime, int n) throws ParseException
+	{
 		Store originStore = getStore(origin);
 		Store destinationStore = getStore(destination);
 		Client person = getClient(renter);
@@ -227,56 +221,44 @@ public class CarRental {
 			}
 			return;
 		}
-		ArrayList<Licence> licences = createLicences(n, scan);
 		if (storeExists(origin) && storeExists(destination) && clientExists(renter)) {
 			int base = categories.get(category);
 			Rental newRental = new Rental(person, reservation, base, new ArrayList<Insurance>(), originStore, 
-				destinationStore, pickUpDateTime, returnDateTime, licences, new ArrayList<Extra>(), true);
+				destinationStore, pickUpDateTime, returnDateTime, new ArrayList<Licence>(), new ArrayList<Extra>(), true);
 			person.setActiveRental(newRental);
 			RentalWriter.newRental(newRental);
 			RentalWriter.changeCarInformation(reservation);
 			System.out.println("Reserva creada exitosamente");
 		} else {
 			System.out.println("No se ha podido iniciar la reserva correctamente. Revise los datos que ha ingresado. ");
-		}
-		
+		}		
 	}
 
-	public static void reserveCar(String plate, String origin, String destination, int days) {
-
+	public static void reserveCar(String plate, String origin, String destination, int days)
+	{
 		Calendar returnCalendar = Calendar.getInstance();
 		returnCalendar.add(Calendar.DAY_OF_MONTH, days);
 		Rental rental = new Rental(null, getCar(plate), days, null, getStore(origin), getStore(destination), 
 			Calendar.getInstance(), returnCalendar, null, null, true);
 		rental.getCar().setAvailableTime(days);
 		RentalWriter.newRental(rental);
-
 	}
 
-	private static ArrayList<Licence> createLicences(int n, Scanner scan) throws ParseException {
-
-		ArrayList<Licence> licences = new ArrayList<Licence>();
-		for (int j = 0; j < n; j++) {
-			System.out.println(String.format("Ingrese los datos de la licencia del conductor #%d.", j+2));
-			System.out.println("Ingrese el número de la licencia: ");
-			long licenceNumber = scan.nextLong();
-			System.out.println("Ingrese el país en que se expidió esta licencia: ");
-			String licenceCountry = scan.nextLine();
-			System.out.println("Ingrese la fecha de expiración de la licencia (AAAA-MM-DD): ");
-			String licenceExpString = scan.nextLine();
-			Calendar licenceExpiration = Calendar.getInstance();
-			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			Date licenceExpDate = (Date) formatter.parse(licenceExpString);
-			licenceExpiration.setTime(licenceExpDate);
-			System.out.println("Ingrese la ubicación de la licencia en el computador (.png únicamente): ");
-			String licencePhotoPath = scan.nextLine();
-			Licence licence = new Licence(licenceNumber, licenceCountry, licenceExpiration, licencePhotoPath);
-			licences.add(licence);
-			secondaryLicences.put(licenceNumber, licence);
-			// TODO: Add new licences to files with RentalWriter
-		}
+	public static ArrayList<Licence> addLicence(String login, long licenceNumber, String licenceCountry, 
+		String licenceExpString, String licencePhotoPath) throws ParseException 
+	{
+		Client client = clients.get(login);
+		ArrayList<Licence> licences = client.getActiveRental().getSecondaryDriver();
+		Calendar licenceExpiration = Calendar.getInstance();
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date licenceExpDate = (Date) formatter.parse(licenceExpString);
+		licenceExpiration.setTime(licenceExpDate);
+		Licence licence = new Licence(licenceNumber, licenceCountry, licenceExpiration, licencePhotoPath);
+		licences.add(licence);
+		client.getActiveRental().setLicences(licences);
+		secondaryLicences.put(licenceNumber, licence);
+		// TODO: Add new licences to files with RentalWriter
 		return licences;
-
 	}
 
 	public static void confirmPickUp(String login, String workplace, Scanner scan) throws ParseException {
@@ -315,7 +297,7 @@ public class CarRental {
 			returnDate.setTime(returnDate2);
 			System.out.println("Ingrese el número de segundos conductores que desea registrar: ");
 			int n = scan.nextInt();
-			reserveCar(login, category, workplace, destination, Calendar.getInstance(), returnDate, n, scan);
+			reserveCar(login, category, workplace, destination, Calendar.getInstance(), returnDate, n);
 		}
 
 		Rental rental = person.getActiveRental();
@@ -341,64 +323,37 @@ public class CarRental {
 		}
 	}
 
-	private static ArrayList<Extra> registerExtras(Scanner scan) {
+	public static void addExtra(String login, String type, int cost, String specification)
+	{
 
-		boolean more = true;
-		ArrayList<Extra> extras = new ArrayList<Extra>();
-		while (more) {
-			scan.nextLine();
-			System.out.println("Ingrese el tipo de recargo siendo lo más compacto posible: ");
-			String type = scan.nextLine();
-			System.out.println("Ingrese el costo de este recargo: ");
-			int cost = scan.nextInt();
-			System.out.println("Ingrese los comentarios del recargo (no use comas ','): ");
-			String specification = scan.nextLine();
-			extras.add(new Extra(type, cost, specification));
-			System.out.println("¿Existe algún otro recargo que desee ingresar?");
-			System.out.println("1. Sí\n2. No\nIngrese el número de su respuesta: ");
-			int response = scan.nextInt();
-			if (response == 2) more = false;
-		}
-		return extras;
+		Rental active = clients.get(login).getActiveRental();
+		ArrayList<Extra> extras = active.getExtras();
+		extras.add(new Extra(type, cost, specification));
+		active.setExtras(extras);
 
 	}
 
-	public static void confirmReturn(String login, int days, int response, String employeeLogin, 
-		String employeePassword, Scanner scan) {
+	public static boolean confirmReturn(String login, int days, String employeeLogin, String employeePassword)
+	{
 
 		Client person = getClient(login);
-		if (person.getActiveRental() == null) System.out.println("Este cliente no tiene una renta activa. ");
-		else {
-			Rental rental = person.getActiveRental();
-			ArrayList<Extra> extrasList = new ArrayList<Extra>();
-			if (response == 1) extrasList = registerExtras(scan);
-			rental.setExtras(extrasList);
-			rental.setActive(false);
-			int total = 0;
-			if (Calendar.getInstance().after(rental.getReturn())) {
-				rental.setReturn(Calendar.getInstance());
-				total = rental.getFinalCharge();
-			} else {
-				total = rental.getFinalCharge();
-				rental.setReturn(Calendar.getInstance());
-			}
-			Store destination = getStore(person.getActiveRental().getDestination().getName());
-			String resultingString = "Alquiler finalizado con éxito.\nDetalles:\n";
-			ArrayList<Extra> extras = rental.getExtras();
-			for (Extra extra: extras) resultingString += String.format(" + %-20s: %d/día", 
-				extra.getType(), extra.getCost());
-			ArrayList<Insurance> insurances = rental.getInsurances();
-			for (Insurance insurance: insurances) resultingString += String.format(" + %-20s: %d/día", 
-				insurance.getName(), insurance.getCost());
-			Car car = rental.getCar();
-			car.setAvailableTime(days);
-			car.setStatus((byte) 0);
-			destination.addCar(car);
-			resultingString += String.format("El total final del alquiler es de %8d", total);
-			System.out.println(resultingString);
-			RentalWriter.changeRentalInformation(rental);
-			RentalWriter.changeCarInformation(car);
+		if (person.getActiveRental() == null) return false;
+		Rental rental = person.getActiveRental();
+		rental.setActive(false);
+		if (Calendar.getInstance().after(rental.getReturn())) {
+			rental.setReturn(Calendar.getInstance());
+		} else {
+			rental.setReturn(Calendar.getInstance());
 		}
+		Store destination = stores.get(Users.loadUser(employeeLogin, employeePassword).getWorkplace());
+		rental.setDestination(destination);
+		Car car = rental.getCar();
+		car.setAvailableTime(days);
+		car.setStatus((byte) 0);
+		destination.addCar(car);
+		RentalWriter.changeRentalInformation(rental);
+		RentalWriter.changeCarInformation(car);
+		return true;
 
 	}
 

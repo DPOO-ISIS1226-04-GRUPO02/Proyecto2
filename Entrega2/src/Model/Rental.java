@@ -53,6 +53,11 @@ public class Rental {
 
     }
 
+    public void setLicences(ArrayList<Licence> licences)
+    {
+        this.secondaryDriver = licences;
+    }
+
     public ArrayList<Licence> getSecondaryDriver() {
 
         return secondaryDriver;
