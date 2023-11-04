@@ -177,7 +177,7 @@ public class CarRental {
 	}
 
 	public static String reserveCar(String login, String category, String origin, String destination,
-		Calendar pickUpDateTime, Calendar returnDateTime) throws ParseException
+		Calendar pickUpDateTime, Calendar returnDateTime)
 	{
 		Store originStore = getStore(origin);
 		Store destinationStore = getStore(destination);
