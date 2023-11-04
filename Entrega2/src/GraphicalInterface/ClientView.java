@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class ClientView extends JPanel {
-
+public class ClientView extends JPanel
+{
     private ChangePersonalInformation personal;
     private RegisterPersonalInformation register;
     private ReserveCar reserve;
@@ -62,12 +62,11 @@ public class ClientView extends JPanel {
         add(register, "Register");
         add(personal, "Personal");
         add(reserve, "Reserve");
-
     }
 
-    void showMain() {
+    void showMain()
+    {
         CardLayout cardLayout = (CardLayout) getLayout();
         cardLayout.show(this, "Main");
     }
-    
 }

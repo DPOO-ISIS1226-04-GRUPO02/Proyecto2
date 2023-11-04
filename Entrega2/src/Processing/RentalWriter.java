@@ -280,6 +280,7 @@ public class RentalWriter {
             }
         }
     }
+
     public static void newRental(Rental rental){
         String plate = rental.getCar().getPlate();
         String folderPath = "data" + separator + "rentals" + separator + plate;
@@ -335,13 +336,8 @@ public class RentalWriter {
         catch (IOException e) {
             e.printStackTrace();
         }    
-            
-        
-        
-
-                
-
     }
+
     public static void changeClientInformation (Client person){
         String username = person.getLogin();
         String filePath = "data" + separator + "clients" + separator + username + separator + "clientInfo.txt";
@@ -456,25 +452,23 @@ public class RentalWriter {
 
         folderPath = folderPath + separator + date;
         String filePath = folderPath + separator + "info.txt";
-        try{
-        FileWriter fw = new FileWriter(filePath);
-        fw.write("");
-        fw.close();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd:HH-mm");
-        String datePickString = dateFormat.format(rental.getPickUp().getTime());
-        String dateReturnString = dateFormat.format(rental.getReturn().getTime());
-        String content = rental.getClient().getLogin() + ',' + rental.getCar().getPlate() + ',' + 
-            String.valueOf(rental.getFinalCharge()) + ',' + rental.getOrigin().getName() + ',' + 
-            rental.getDestination().getName() + ',' + datePickString + ',' + dateReturnString + ',' + rental.getActive();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true))) {
-            bufferedWriter.append(content);
-            bufferedWriter.newLine();
-            System.out.println("\nInformación del usuario actualizada con éxito.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        try {
+            FileWriter fw = new FileWriter(filePath);
+            fw.write("");
+            fw.close();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd:HH-mm");
+            String datePickString = dateFormat.format(rental.getPickUp().getTime());
+            String dateReturnString = dateFormat.format(rental.getReturn().getTime());
+            String content = rental.getClient().getLogin() + ',' + rental.getCar().getPlate() + ',' + 
+                String.valueOf(rental.getFinalCharge()) + ',' + rental.getOrigin().getName() + ',' + 
+                rental.getDestination().getName() + ',' + datePickString + ',' + dateReturnString + ',' + rental.getActive();
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true))) {
+                bufferedWriter.append(content);
+                bufferedWriter.newLine();
+                System.out.println("\nInformación del usuario actualizada con éxito.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -560,12 +554,13 @@ public class RentalWriter {
         }
     }
 
-    public static void newInsurance(Insurance insurance) {
+    public static void newInsurance(Insurance insurance)
+    {
         String filePath = "data" +separator + "insurances.txt";
         try {
             FileWriter fileWriter = new FileWriter(filePath, true); // Modo adjunto al final del archivo
             String insuranceEntry = insurance.getName() + "," + String.valueOf(insurance.getCost()) + "," + 
-                insurance.getSpecification() + "," + "0" + System.lineSeparator();
+                insurance.getSpecification() + "," + Boolean.toString(insurance.isActive()) + System.lineSeparator();
             fileWriter.write(insuranceEntry);
             fileWriter.close();
             System.out.println("Nuevo seguro agregado con éxito.");
@@ -573,19 +568,40 @@ public class RentalWriter {
             ex.printStackTrace();
         }
     }
-    public static void newSecondaryLicence (Licence licence){
+
+    public static void changeInsuranceStatus(ArrayList<Insurance> insurances)
+    {
+        String filePath = "data" + separator + "insurances.txt";
+        try 
+        {
+            FileWriter fw = new FileWriter(filePath, false);
+            for (Insurance insurance: insurances) 
+            {
+                String entry = insurance.getName() + "," + String.valueOf(insurance.getCost()) + "," + 
+                    insurance.getSpecification() + "," + Boolean.toString(insurance.isActive()) + System.lineSeparator();
+                fw.write(entry);
+            }
+            fw.close();
+            System.out.println("Los cambios a los seguros fueron hechos.");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void newSecondaryLicence (Licence licence)
+    {
         String txtFileName = "data" +separator + "secondaryLicence" + separator + licence.getNumber() + ".txt";
         try {
-        FileWriter fileWriter = new FileWriter(txtFileName);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-        String date = sdf.format(licence.getExpiration().getTime());
-        String information = licence.getNumber() + "," + licence.getCountry() + "," + date;
-        fileWriter.write(information);
-        fileWriter.close();
-        Path originalPath = Paths.get(licence.getPhotoPath());
-        byte[] photoData = Files.readAllBytes(originalPath);
-        Path destinyPath = Paths.get("data" +separator + "secondaryLicence" + separator + licence.getNumber() + ".jpg");
-        Files.write(destinyPath, photoData);
+            FileWriter fileWriter = new FileWriter(txtFileName);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+            String date = sdf.format(licence.getExpiration().getTime());
+            String information = licence.getNumber() + "," + licence.getCountry() + "," + date;
+            fileWriter.write(information);
+            fileWriter.close();
+            Path originalPath = Paths.get(licence.getPhotoPath());
+            byte[] photoData = Files.readAllBytes(originalPath);
+            Path destinyPath = Paths.get("data" +separator + "secondaryLicence" + separator + licence.getNumber() + ".jpg");
+            Files.write(destinyPath, photoData);
         } catch (IOException e){
             e.printStackTrace();
         }

@@ -64,24 +64,24 @@ public class Rental {
 
     }
 
-    public Car getCar() {
-
+    public Car getCar()
+    {
         return car;
-
     }
 
-    public int getFinalCharge() {
-
-        int total = baseCharge;
-        if (extras != null && extras.size() > 0){
+    public int getFinalCharge() 
+    {
+        int total = 0;
+        if (extras != null && extras.size() > 0)
+        {
             for (Extra extra: extras) total += extra.getCost();
         }
-        if (insurances != null &&insurances.size() > 0){
-        for (Insurance insurance: insurances) total += insurance.getCost();
-    }
+        if (insurances != null &&insurances.size() > 0)
+        {
+            for (Insurance insurance: insurances) total += insurance.getCost();
+        }
         int daysBetween = (int) ChronoUnit.DAYS.between(pickUpDateTime.toInstant(), returnDateTime.toInstant());
-        return total * (daysBetween + 1);
-
+        return total + baseCharge * (daysBetween + 1);
     }
 
     public Store getOrigin() {

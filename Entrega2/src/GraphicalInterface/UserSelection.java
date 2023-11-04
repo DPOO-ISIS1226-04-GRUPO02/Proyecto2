@@ -3,6 +3,8 @@ package GraphicalInterface;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.text.ParseException;
 
 import Processing.Users;
 import Model.User;
@@ -21,8 +23,8 @@ public class UserSelection extends JFrame {
     JFrame userSelection = this;
     MainInterface mi = new MainInterface();
 
-    UserSelection() {
-
+    UserSelection()
+    {
         setTitle("User Selection");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(getPreferredSize());
@@ -51,31 +53,50 @@ public class UserSelection extends JFrame {
         add(buttons);
 
         setVisible(true);
+        try
+        {
+            Users.loadUsers();
+        }
+        catch (IOException | ParseException ex) 
+        {
+            new ErrorDialog("Error al inicializar los usuarios", this);
+        }
 
-        login.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
+        login.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
                     int access = Users.loadUser(username.getText(), password.getText()).getAccess();
                     setVisible(false);
                     mi.loadView(access, username.getText(), password.getText());
-                } catch (Exception ex) {
+                } 
+                catch (Exception ex)
+                {
                     new ErrorDialog("Este usuario y esta contraseña no coinciden.", userSelection);
                 }
             }
         });
-
-        register.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        register.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
                 User registered = Users.registerNewUser(username.getText(), password.getText(), 0, null);
-                if (registered.equals(null)) 
+                if (registered.equals(null))
+                {
                     new ErrorDialog("No se pudo crear el usuario! Este nombre de usuario ya existe.", 
-                                    userSelection);
-                else mi.loadView(0, username.getText(), password.getText());
+                        userSelection);
+                    return;
+                }
+                setVisible(false);
+                mi.loadView(0, username.getText(), password.getText());
             }
         });
-
-        mi.setVisible(false);
-
     }
-    
+
+    public void main(String[] args)
+    {
+        new UserSelection();
+    }
 }

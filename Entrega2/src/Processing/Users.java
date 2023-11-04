@@ -3,54 +3,48 @@ package Processing;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.Set;
 
 import Model.User;
 
-public class Users {
-
+public class Users
+{
 	private static HashMap<String, User> logins;
 
-	public static void loadUsers() throws IOException, ParseException {
-
+	public static void loadUsers() throws IOException, ParseException
+	{
 		logins = RentalLoader.usersInformation();
-
 	}
 	
-	public static User registerNewUser(String login, String password, int access, String workplace) {
-
-		User created = new User(login, password, access, workplace);
-		logins.put(password, created);
-		RentalWriter.newUser(created);
-		return created;
-
-	}
-
-	public static User registerNewUser(String login, String password, int access, String login2, String password2) {
-		
-		Scanner scan = new Scanner(System.in);
-		User user = loadUser(login2, password2);
-		String workplace = user.getWorkplace();
-		
+	public static User registerNewUser(String login, String password, int access, String workplace)
+	{
+		if (logins.containsKey(login)) return null;
 		User created = new User(login, password, access, workplace);
 		logins.put(login, created);
-		scan.close();
-		RentalWriter.newUser(user);
+		RentalWriter.newUser(created);
 		return created;
-		
+	}
+
+	public static User registerNewUser(String login, String password, int access, String login2, String password2)
+	{
+		if (logins.containsKey(login)) return null;
+		User user = loadUser(login2, password2);
+		String workplace = user.getWorkplace();
+		User created = new User(login, password, access, workplace);
+		logins.put(login, created);
+		RentalWriter.newUser(created);
+		return created;	
 	}
 	
-	public static User loadUser(String username, String password) {
-		
+	public static User loadUser(String username, String password)
+	{	
 		User possibility = logins.get(username);
 		if (possibility.getPassword().equals(password)) return possibility;
 		else return null;
-		
 	}
 	
-	public static String[] getUsernames() {
-
+	public static String[] getUsernames()
+	{
     	Set<String> keySet = logins.keySet(); // Obtener el conjunto de claves como un conjunto de cadenas
     	String[] usernames = new String[keySet.size()]; // Crear una matriz de cadenas del tamaño del conjunto
     	int index = 0;
@@ -59,13 +53,11 @@ public class Users {
     	    index++;
     	}
     	return usernames; // Devolver la matriz de nombres de usuario
-
 	}
 
-	public static HashMap<String, User> getUsers() {
-
+	public static HashMap<String, User> getUsers()
+	{
 		return logins;
-
 	}
 	
 }

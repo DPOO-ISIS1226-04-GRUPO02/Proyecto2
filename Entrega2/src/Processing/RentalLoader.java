@@ -335,11 +335,6 @@ public class RentalLoader {
 
     }
 
-    
-    
-
-
-
     public static HashMap<String, Insurance> loadInsurances() throws IOException {
 
         HashMap<String, Insurance> insurances = new HashMap<String, Insurance>();

@@ -1,7 +1,6 @@
 package Processing;
 
 import java.util.HashMap;
-import java.util.Scanner;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -10,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
+
+import javax.swing.JOptionPane;
 
 import Model.Car;
 import Model.Store;
@@ -30,8 +31,8 @@ public class CarRental {
 	private static HashMap<Car, ArrayList<Rental>> rentals;
 	private static HashMap<Long, Licence> secondaryLicences;
 
-	public static void loadCarRental() throws IOException, ParseException {
-
+	public static void loadCarRental() throws IOException, ParseException
+	{
 		clients = RentalLoader.loadClients();
 		cars = RentalLoader.loadCars();
 		stores = RentalLoader.loadStores();
@@ -39,13 +40,12 @@ public class CarRental {
 		insurances = RentalLoader.loadInsurances();
 		rentals = RentalLoader.loadRentals(clients);
 		secondaryLicences = RentalLoader.loadSecondaryLicence();
-
 	}
 
 	public static void registerNewClient(String name, long phone, String email, Calendar dateBirth, String nationality, 
 		String idPhotoPath, long cardNumber, Calendar cardExpiration, short cardCode, String cardOwner, String cardAddress, 
-		String login, long licenceNumber, String licenceCountry, Calendar licenceExpiration, String licencePhotoPath) {
-
+		String login, long licenceNumber, String licenceCountry, Calendar licenceExpiration, String licencePhotoPath)
+	{
 		Payment payment = new Payment(cardNumber, cardExpiration, cardCode, cardOwner, cardAddress);
 		Licence licence = new Licence(licenceNumber, licenceCountry, licenceExpiration, licencePhotoPath);
 		Client person = new Client(name, phone, email, dateBirth, nationality, idPhotoPath, licence, payment, login);
@@ -54,42 +54,37 @@ public class CarRental {
 		RentalWriter.addClient(person);	
 	}
 
-	public static Client getClient(String login) {
-
+	public static Client getClient(String login)
+	{
 		return clients.get(login);
-
 	}
 
-	public static boolean clientExists(String login) {
-
+	public static boolean clientExists(String login)
+	{
 		Client client = getClient(login);
 		if (client.equals(null)) return false;
 		else return true;
-
 	}
 
-	public static Car getCar(String plate) {
-
+	public static Car getCar(String plate)
+	{
 		return cars.get(plate);
-
 	}
 
-	public static boolean carExists(String plate) {
-
+	public static boolean carExists(String plate)
+	{
 		Car car = getCar(plate);
 		if (car.equals(null)) return false;
 		else return true;
-
 	}
 
-	public static Store getStore(String storeName) {
-
+	public static Store getStore(String storeName)
+	{
 		return stores.get(storeName);
-
 	}
 
-	public static String getStoreByPlate(String plate) {
-
+	public static String getStoreByPlate(String plate)
+	{
 		for (String storeString: stores.keySet()) {
 			Store store = getStore(storeString);
 			for (String category: categories.keySet()) {
@@ -97,61 +92,54 @@ public class CarRental {
 			}
 		}
 		return null;
-
 	}
 
-	public static boolean storeExists(String name) {
-
+	public static boolean storeExists(String name)
+	{
 		Store store = getStore(name);
 		if (store == null) return false;
 		else return true;
+	}
 
-		}
-
-	public static Set<String> getCategories() {
-
+	public static Set<String> getCategories()
+	{
 		return categories.keySet();
-
 	}
 
-	public static Set<String> getStores() {
-
+	public static Set<String> getStores()
+	{
 		return stores.keySet();
-
 	}
 
-	public static boolean insuranceExists(String name) {
-
+	public static boolean insuranceExists(String name)
+	{
 		if (insurances.keySet().contains(name)) return true;
 		else return false;
-
 	}
 
-	public static Set<String> getInsurances() {
-
+	public static Set<String> getInsurances()
+	{
 		return insurances.keySet();
-
 	}
  
-	public static void addInsurance(String name, int cost, String specs) {
+	public static void addInsurance(String name, int cost, String specs) 
+	{
 		Insurance insurance = new Insurance(name, cost, specs, true);
 		insurances.put(name, insurance);
 		RentalWriter.newInsurance(insurance);
-
 	}
 
-	public static boolean changeInsuranceStatus(String name) {
-
+	public static boolean changeInsuranceStatus(String name)
+	{
 		boolean truth = insurances.get(name).isActive();
 		insurances.get(name).setActive(!truth);
-		return !truth;
-		
+		RentalWriter.changeInsuranceStatus(new ArrayList<Insurance>(insurances.values()));
+		return !truth;	
 	}
 
 	public static void modifyInfoClient(String login, String selectedInfo, String infoString) 
 	{	
 		Client client = getClient(login);
-
 		if (selectedInfo.equals("Nombre"))
 		{
 			client.setName(infoString);
@@ -169,7 +157,6 @@ public class CarRental {
 		{
 			client.setIdPhotoPath(infoString);
 		}
-
 		RentalWriter.changeClientInformation(client);
 
 	}
@@ -189,58 +176,50 @@ public class CarRental {
 		RentalWriter.changeClientInformation(client);
 	}
 
-	public static void reserveCar(String renter, String category, String origin, String destination,
-		Calendar pickUpDateTime, Calendar returnDateTime, int n) throws ParseException
+	public static String reserveCar(String login, String category, String origin, String destination,
+		Calendar pickUpDateTime, Calendar returnDateTime) throws ParseException
 	{
 		Store originStore = getStore(origin);
 		Store destinationStore = getStore(destination);
-		Client person = getClient(renter);
+		Client person = getClient(login);
 		ArrayList<String> categoryList = originStore.getInventory().get(category);
+		if (categoryList.size() == 0) return "No hay carros en la categoría seleccionada.";
+		if (!person.getActiveRental().equals(null)) return "Usted ya tiene una renta activa.";
 		int i = 0;
 		boolean found = false;
-		Car reservation = null;
-		while (person.getActiveRental() == null && categoryList != null && (!found && i < categoryList.size())) {
+		Car car = null;
+		while (!found && i < categoryList.size()) 
+		{
 			String plate = categoryList.get(i);
 			byte status = getCar(plate).getStatus();
 			Calendar availableIn = getCar(plate).getAvailableDate();
-			if (status == (byte) 0 && availableIn.before(pickUpDateTime)) {
+			if (status == (byte) 0 && availableIn.before(pickUpDateTime))
+			{
 				found = true;
-				reservation = getCar(plate);
-				reservation.setStatus((byte)1);
+				car = getCar(plate);
+				car.setStatus((byte) 1);
 			}
 			i += 1;
 		}
-		if (reservation == null) {
-			if (person.getActiveRental() != null){
-				System.out.println("Usted ya tiene una reserva activa en curso");
-			}
-			else{
-			System.out.println(String.format(
-				"No se ha encontrado un carro de esta categoría en la tienda %s. Seleccione otra, por favor.", 
-				origin));
-			}
-			return;
-		}
-		if (storeExists(origin) && storeExists(destination) && clientExists(renter)) {
-			int base = categories.get(category);
-			Rental newRental = new Rental(person, reservation, base, new ArrayList<Insurance>(), originStore, 
-				destinationStore, pickUpDateTime, returnDateTime, new ArrayList<Licence>(), new ArrayList<Extra>(), true);
-			person.setActiveRental(newRental);
-			RentalWriter.newRental(newRental);
-			RentalWriter.changeCarInformation(reservation);
-			System.out.println("Reserva creada exitosamente");
-		} else {
-			System.out.println("No se ha podido iniciar la reserva correctamente. Revise los datos que ha ingresado. ");
-		}		
+		if (car.equals(null)) return "No hay carros de esta categoría disponibles para la renta en la sede " + origin;
+		int base = categories.get(category);
+		Rental newRental = new Rental(person, car, base, new ArrayList<Insurance>(), originStore, 
+			destinationStore, pickUpDateTime, returnDateTime, new ArrayList<Licence>(), new ArrayList<Extra>(), true);
+		person.setActiveRental(newRental);
+		RentalWriter.changeClientInformation(person);
+		RentalWriter.newRental(newRental);
+		RentalWriter.changeCarInformation(car);
+		return null;	
 	}
 
-	public static void reserveCar(String plate, String origin, String destination, int days)
+	public static void reserveCar(String plate, String destination, int days)
 	{
 		Calendar returnCalendar = Calendar.getInstance();
 		returnCalendar.add(Calendar.DAY_OF_MONTH, days);
-		Rental rental = new Rental(null, getCar(plate), days, null, getStore(origin), getStore(destination), 
-			Calendar.getInstance(), returnCalendar, null, null, true);
+		Rental rental = new Rental(null, getCar(plate), days, new ArrayList<Insurance>(), getStore(getStoreByPlate(plate)), 
+			getStore(destination), Calendar.getInstance(), returnCalendar, new ArrayList<Licence>(), new ArrayList<Extra>(), true);
 		rental.getCar().setAvailableTime(days);
+		RentalWriter.changeCarInformation(getCar(plate));
 		RentalWriter.newRental(rental);
 	}
 
@@ -257,138 +236,96 @@ public class CarRental {
 		licences.add(licence);
 		client.getActiveRental().setLicences(licences);
 		secondaryLicences.put(licenceNumber, licence);
-		// TODO: Add new licences to files with RentalWriter
+		RentalWriter.newSecondaryLicence(licence);
 		return licences;
 	}
 
-	public static void confirmPickUp(String login, String workplace, Scanner scan) throws ParseException {
-
+	public static boolean confirmPickUp(String login, String workplace) throws ParseException
+	{
+		if (!clientExists(login)) return false;
 		Client person = getClient(login);
-		if (workplace.equals("null")){
-			ArrayList<String> tiendas = new ArrayList<>(stores.keySet());
-			int i = 1;
-			for (String sede : tiendas){
-				System.out.println(i + ". " + sede);
-				i += 1;
-			}
-			System.out.println("Ingrese el número de la sede desde la que está haciendo la reserva: ");
-			int ref = scan.nextInt();
-			workplace = tiendas.get(ref - 1);
-		}
-
-		if (person.getActiveRental()== null) {
-			System.out.println("Ingrese la categoría del vehículo que desea alquilar: ");
-			String category = scan.nextLine();
-			while (!categories.containsKey(category) && !category.equals("stop")) {
-				System.out.println("Esta categoría no existe en esta tienda. Intente de nuevo o escriba 'stop para salir: ");
-				category = scan.nextLine();
-			}
-			System.out.println("Ingrese el nombre de la tienda al que se va a devolver el carro: ");
-			String destination = scan.nextLine();
-			while (!storeExists(destination) && !destination.equals("stop")) {
-				System.out.println("Tienda no encontrada. Ingrese el nombre de nuevo o 'stop' para salir: ");
-				destination = scan.nextLine();
-			}
-			System.out.println("Ingrese la fecha en que se planea devolver el vehículo (AAAA-MM-DD:HH-MM): ");
-			String returnDateString = scan.nextLine();
-			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd:HH-mm");
-        	Calendar returnDate = Calendar.getInstance();
-            Date returnDate2 = (Date)formatter.parse(returnDateString);
-			returnDate.setTime(returnDate2);
-			System.out.println("Ingrese el número de segundos conductores que desea registrar: ");
-			int n = scan.nextInt();
-			reserveCar(login, category, workplace, destination, Calendar.getInstance(), returnDate, n);
-		}
-
+		if (person.getActiveRental()== null) return false;
 		Rental rental = person.getActiveRental();
-		if (workplace.equals(rental.getOrigin().getName())){
-			rental.setActive(true);
-			ArrayList<String> seguros = new ArrayList<>(insurances.keySet());
-			int eleccion = 0;
-			for (String seguro : seguros){
-				System.out.println("Desea añadir el siguiente seguro: " + seguro +". Marque 1 para aceptarlo o 0 para rechazarlo");
-				eleccion = scan.nextInt();
-				if (eleccion == 1){
-					rental.getInsurances().add(insurances.get(seguro));
-				}
-			}
-			Car car = rental.getCar();
-			car.setStatus((byte)2);
-			RentalWriter.changeRentalInformation(rental);
-			RentalWriter.changeCarInformation(car);
-			System.out.println("Vehículo entregado");
-		}
-		else {
-			System.out.println("No puede confirmar entregas de una sede en la que no trabaja a menos que sea General Manager");
-		}
+		if (!workplace.equals(rental.getOrigin().getName())) return false;
+		rental.setActive(true);
+		Car car = rental.getCar();
+		car.setStatus((byte)2);
+		RentalWriter.changeRentalInformation(rental);
+		RentalWriter.changeCarInformation(car);
+		return true;
 	}
 
-	public static void addExtra(String login, String type, int cost, String specification)
+	public static String addExtra(String login, String type, int cost, String specification)
 	{
-
 		Rental active = clients.get(login).getActiveRental();
+		if (active.equals(null)) return "Primero debe crear una reserva para poder añadir extras";
 		ArrayList<Extra> extras = active.getExtras();
 		extras.add(new Extra(type, cost, specification));
 		active.setExtras(extras);
-
+		return null;
 	}
 
-	public static boolean confirmReturn(String login, int days, String employeeLogin, String employeePassword)
+	public static String confirmReturn(String login, int days, String employeeLogin, String employeePassword)
 	{
-
 		Client person = getClient(login);
-		if (person.getActiveRental() == null) return false;
+		if (person.getActiveRental() == null) return "El cliente no tiene una renta activa.";
 		Rental rental = person.getActiveRental();
 		rental.setActive(false);
+		Store destination = stores.get(Users.loadUser(employeeLogin, employeePassword).getWorkplace());
+		if (!destination.equals(rental.getDestination())) 
+		{
+			String extraCost = JOptionPane.showInputDialog("Ingrese el recargo por devolver el carro a una tienda distinta: ");
+			addExtra(login, "Devuelto a una tienda distinta", Integer.parseInt(extraCost),
+				"El carro fue devuelto a una tienda distinta a la que fue inicialmente especificada.");
+		}
+		rental.setDestination(destination);
+		int total = 0;
 		if (Calendar.getInstance().after(rental.getReturn())) {
 			rental.setReturn(Calendar.getInstance());
+			total = rental.getFinalCharge();
 		} else {
+			total = rental.getFinalCharge();
 			rental.setReturn(Calendar.getInstance());
 		}
-		Store destination = stores.get(Users.loadUser(employeeLogin, employeePassword).getWorkplace());
-		rental.setDestination(destination);
 		Car car = rental.getCar();
 		car.setAvailableTime(days);
 		car.setStatus((byte) 0);
 		destination.addCar(car);
 		RentalWriter.changeRentalInformation(rental);
 		RentalWriter.changeCarInformation(car);
-		return true;
-
+		RentalWriter.changeStoreInformation(destination);
+		return "Reserva finalizada con éxito. Debe pagar un total de " + Integer.toString(total);
 	}
 
 	public static void registerCar(String brand, String plate, String model, String color, 
-		boolean isAutomatic, String category, int availableIn, String store) {
-
+		boolean isAutomatic, String category, int availableIn, String store)
+	{
 		Car carro = new Car(brand, plate, model, color, isAutomatic, category, availableIn, (byte) 0);
 		carro.setStatus((byte) 0);
 		cars.put(plate, carro);
 		Store st = stores.get(store);
-		((st.getInventory()).get(category)).add(plate);
+		st.getInventory().get(category).add(plate);
 		RentalWriter.addCar(carro);
-
 	} 
 
 	public static void newStore(String name, String location, Calendar openingTime, Calendar closingTime, 
-		byte OpeningDays) {
-
+		byte OpeningDays)
+	{
 		HashMap <String, ArrayList<String>> inventory = new HashMap<String, ArrayList<String>>();
 		Store store = new Store(name, location, openingTime, closingTime, OpeningDays, inventory);
 		stores.put(name, store);
 		RentalWriter.addStore(store);
-
 	}
 
-	public static void changeVehicleStatus(String plate, byte status) {
-
+	public static void changeVehicleStatus(String plate, byte status)
+	{
 		Car car = cars.get(plate);
-		(car).setStatus(status);
+		car.setStatus(status);
 		RentalWriter.changeCarInformation(car);
-
 	}
 
-	public static String getPastRentals(Car car) {
-
+	public static String getPastRentals(Car car)
+	{
 		ArrayList<Rental> listRentals = rentals.get(car);
 		String result = "";
 		int i = 1;
@@ -404,14 +341,11 @@ public class CarRental {
 		}
 		result += "Información completa de las rentas pasadas en ./data/rentals/" + car.getPlate();
 		return result;
-
 	}
 
-	public static void setTariff(String category, int amount) {
-
+	public static void setTariff(String category, int amount)
+	{
 		categories.put(category, amount);
 		RentalWriter.changeTariffs(category, amount);
-
 	}
-
 }
