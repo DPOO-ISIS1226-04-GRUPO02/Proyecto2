@@ -9,16 +9,12 @@ import javax.swing.*;
 
 public class ClientView extends JPanel
 {
-    private ChangePersonalInformation personal;
-    private RegisterPersonalInformation register;
-    private ReserveCar reserve;
-
     ClientView(String login, JFrame main) 
     {
         JPanel panel = this;
-        personal = new ChangePersonalInformation(login, this);
-        register = new RegisterPersonalInformation(login, main, this);
-        reserve = new ReserveCar(login, main, this);
+        ChangePersonalInformation personal = new ChangePersonalInformation(login, this);
+        RegisterPersonalInformation register = new RegisterPersonalInformation(login, main, this);
+        ReserveCar reserve = new ReserveCar(login, main, this);
 
         setLayout(new CardLayout());
         JPanel mainCard = new JPanel();

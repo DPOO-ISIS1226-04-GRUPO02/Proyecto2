@@ -240,7 +240,7 @@ public class CarRental {
 		return licences;
 	}
 
-	public static boolean confirmPickUp(String login, String workplace) throws ParseException
+	public static boolean confirmPickUp(String login, String workplace)
 	{
 		if (!clientExists(login)) return false;
 		Client person = getClient(login);
