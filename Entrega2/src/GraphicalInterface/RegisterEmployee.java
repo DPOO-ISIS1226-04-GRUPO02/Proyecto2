@@ -10,43 +10,45 @@ import Processing.Users;
 
 public class RegisterEmployee extends JPanel{
 
-   public RegisterEmployee(String login, String password)
+   public RegisterEmployee(String login, String password, JFrame main, LManagerView lManager)
    {
-    JPanel registerEmployeePanel = new JPanel(new GridLayout(2, 1));
+      setLayout(new GridLayout(3, 2));
 
-    JLabel employeeLoginLabel = new JLabel("Nombre de usuario para el nuevo empleado: ");
-    JTextField employeeLoginField = new JTextField();
+      JLabel employeeLoginLabel = new JLabel("Nombre de usuario para el nuevo empleado: ");
+      JTextField employeeLoginField = new JTextField();
 
-    JLabel employeePasswordLabel= new JLabel("Contraseña para el nuevo empleado: ");
-    JTextField employeePasswordField = new JTextField();
+      JLabel employeePasswordLabel= new JLabel("Contraseña para el nuevo empleado: ");
+      JTextField employeePasswordField = new JTextField();
 
-    registerEmployeePanel.add(employeeLoginLabel);
-    registerEmployeePanel.add(employeeLoginField);
-    registerEmployeePanel.add(employeePasswordLabel);
-    registerEmployeePanel.add(employeePasswordField);
+      add(employeeLoginLabel);
+      add(employeeLoginField);
+      add(employeePasswordLabel);
+      add(employeePasswordField);
 
-    JButton okButton = new JButton("Aceptar");
-        okButton.addActionListener(new ActionListener()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               String employeeLogin = employeeLoginField.getText();
-               String employeePassword = employeePasswordField.getText();
-
-               //TODO: manejar error de usuario existente: (linea 261 view)while (usernames.contains(employeeLogin)) {System.out.println("¡Este nombre de usuario ya existe!");System.out.println("Ingrese un nuevo nombre de usuario: ") employeeLogin = scan.nextLine();
-
-               Users.registerNewUser(employeeLogin, employeePassword, 1, login, password);
-               //TODO: falta manejar de users linea 35.
+      JButton okButton = new JButton("Aceptar");
+      okButton.addActionListener(new ActionListener()
+      {
+         public void actionPerformed(ActionEvent e)
+         {
+            String employeeLogin = employeeLoginField.getText();
+            String employeePassword = employeePasswordField.getText();
+            if (Users.registerNewUser(employeeLogin, employeePassword, 1, login, password).equals(null))
+            {
+               new ErrorDialog("Este nombre de usuario ya existe. Escoga otro.", main);
             }
-            
+         }
+      });
+      add(okButton);
 
-        });
-        registerEmployeePanel.add(okButton);
-
-
-
-
+      JButton back = new JButton("Atrás");
+      back.addActionListener(new ActionListener()
+      {
+         public void actionPerformed(ActionEvent e)
+         {
+            lManager.showMain();
+         }
+      });
+      add(back);
    }
     
 }

@@ -29,6 +29,10 @@ public class ReserveCar extends JPanel
         constraints.gridx = 1;
         ArrayList<String> categories = new ArrayList<String>(CarRental.getCategories());
         String[] categoryOptions = new String[categories.size()];
+        for (int i = 0; i < categories.size(); i++)
+        {
+            categoryOptions[i] = categories.get(i);
+        }
         JComboBox<String> category = new JComboBox<String>(categoryOptions);
         add(category, constraints);
 
@@ -45,6 +49,10 @@ public class ReserveCar extends JPanel
         constraints.gridy = 1;
         ArrayList<String> stores = new ArrayList<String>(CarRental.getStores());
         String[] storeOptions = new String[stores.size()];
+        for (int i = 0; i < stores.size(); i++)
+        {
+            storeOptions[i] = stores.get(i);
+        }
         JComboBox<String> origin = new JComboBox<String>(storeOptions);
         add(origin, constraints);
 
