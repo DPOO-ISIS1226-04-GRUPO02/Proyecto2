@@ -333,12 +333,12 @@ public class CarRental {
 		result.add("Información completa de las rentas pasadas en ./data/rentals/" + car.getPlate());
 		for (Rental rental: listRentals)
 		{
-			result.add(String.format("Renta #%d", i));
+			result.add(String.format("%d", i));
         	String formattedDateOut = simpleDateFormat.format(rental.getPickUp().getTime());
-			result.add(String.format("\n\tFecha de inicio de la renta: %s", formattedDateOut));
+			result.add(String.format("%s", formattedDateOut));
 			String formattedDateIn = simpleDateFormat.format(rental.getReturn().getTime());
-			result.add(String.format("\n\tFecha de finalización de la renta: %s", formattedDateIn));
-			result.add(String.format("\n\tCosto total de la renta: %8d$", rental.getFinalCharge()));
+			result.add(String.format("%s", formattedDateIn));
+			result.add(String.format("%d", rental.getFinalCharge()));
 		}
 		return result;
 	}

@@ -32,7 +32,7 @@ public class GetPastRentals extends JPanel
                     return;
                 }
                 ArrayList<String> result = CarRental.getPastRentals(CarRental.getCar(plate));
-                // TODO: Finish the creation of a JList and its corresponding items
+                gManager.showRentalsPanel(result);
             }
         });
 
