@@ -11,7 +11,7 @@ import Processing.CarRental;
 
 public class GetPastRentals extends JPanel
 {
-    GetPastRentals(String plate, JFrame main, GManagerView gManager)
+    GetPastRentals(JFrame main, GManagerView gManager)
     {
         JLabel carLabel = new JLabel("Ingrese la placa del carro a buscar: ");
         JTextField carPlate = new JTextField("ABC123", 6);
