@@ -324,22 +324,22 @@ public class CarRental {
 		RentalWriter.changeCarInformation(car);
 	}
 
-	public static String getPastRentals(Car car)
+	public static ArrayList<String> getPastRentals(Car car)
 	{
 		ArrayList<Rental> listRentals = rentals.get(car);
-		String result = "";
+		ArrayList<String> result = new ArrayList<String>();
 		int i = 1;
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-		for (Rental rental: listRentals) {
-			result += String.format("Renta #%d", i);
+		result.add("Información completa de las rentas pasadas en ./data/rentals/" + car.getPlate());
+		for (Rental rental: listRentals)
+		{
+			result.add(String.format("Renta #%d", i));
         	String formattedDateOut = simpleDateFormat.format(rental.getPickUp().getTime());
-			result += String.format("\n\tFecha de inicio de la renta: %s", formattedDateOut);
+			result.add(String.format("\n\tFecha de inicio de la renta: %s", formattedDateOut));
 			String formattedDateIn = simpleDateFormat.format(rental.getReturn().getTime());
-			result += String.format("\n\tFecha de finalización de la renta: %s", formattedDateIn);
-			result += String.format("\n\tCosto total de la renta: %8d$", rental.getFinalCharge());
-			result += "\n\n";
+			result.add(String.format("\n\tFecha de finalización de la renta: %s", formattedDateIn));
+			result.add(String.format("\n\tCosto total de la renta: %8d$", rental.getFinalCharge()));
 		}
-		result += "Información completa de las rentas pasadas en ./data/rentals/" + car.getPlate();
 		return result;
 	}
 

@@ -6,8 +6,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class LManagerView extends JPanel {
-
+public class LManagerView extends JPanel
+{
     LManagerView(String login, String password, JFrame main) 
     {
         JPanel panel = this;
