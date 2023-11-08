@@ -80,13 +80,10 @@ public class GManagerView extends JPanel
         }
         rentalButtons.setLayout(new GridLayout(rentalsList.size() + 1, 1));
         JButton done = new JButton("Volver");
-        done.addActionListener(new ActionListener()
+        done.addActionListener(e ->
         {
-            public void actionPerformed(ActionEvent e)
-            {
-                CardLayout cardLayout = (CardLayout) panel.getLayout();
-                cardLayout.show(panel, "Rentals");
-            }
+            CardLayout cardLayout = (CardLayout) panel.getLayout();
+            cardLayout.show(panel, "Rentals");
         });
         rentalButtons.add(done);
         for (int i = 0; i < rentalsList.size(); i++)
@@ -97,12 +94,9 @@ public class GManagerView extends JPanel
             information.add(result.get(2 + i * 4));
             information.add(result.get(3 + i * 4));
             information.add(result.get(4 + i * 4));
-            currentButton.addActionListener(new ActionListener()
+            currentButton.addActionListener(e ->
             {
-                public void actionPerformed(ActionEvent e)
-                {
-                    new PastRental(information, panel);
-                }
+                new PastRental(information, panel);
             });
             rentalButtons.add(currentButton);
         }
