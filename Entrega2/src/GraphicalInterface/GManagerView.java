@@ -21,6 +21,7 @@ public class GManagerView extends JPanel
         RegisterCar registerCar = new RegisterCar(this, main);
         RegisterStore registerStore = new RegisterStore(this, main);
         RegisterManager registerManager = new RegisterManager(this, main);
+        
         // TODO: List all the panels for the possible options
 
         setLayout(new CardLayout());

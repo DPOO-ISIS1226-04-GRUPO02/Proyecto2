@@ -319,11 +319,14 @@ public class CarRental {
 		return true;
 	}
 
-	public static void changeVehicleStatus(String plate, byte status)
+	public static boolean changeVehicleStatus(String plate, byte status)
 	{
 		Car car = cars.get(plate);
+		byte current = car.getStatus();
+		if (current == 1 || current == 2) return false;
 		car.setStatus(status);
 		RentalWriter.changeCarInformation(car);
+		return true;
 	}
 
 	public static ArrayList<String> getPastRentals(Car car)
