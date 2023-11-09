@@ -20,6 +20,7 @@ public class GManagerView extends JPanel
         GetPastRentals rentals = new GetPastRentals(main, this);
         RegisterCar registerCar = new RegisterCar(this, main);
         RegisterStore registerStore = new RegisterStore(this, main);
+        RegisterManager registerManager = new RegisterManager(this, main);
         // TODO: List all the panels for the possible options
 
         setLayout(new CardLayout());
@@ -27,12 +28,14 @@ public class GManagerView extends JPanel
         JButton rentalsButton = new JButton("Ver historial de rentas de un carro");
         JButton registerCarButton = new JButton("Registrar un nuevo carro");
         JButton registerStoreButton = new JButton("Registrar una nueva sede");
+        JButton registerManagerButton = new JButton("Registrar un nuevo gerente local");
         // TODO: List all the buttons and its corresponding panels
 
         mainCard.setLayout(new FlowLayout());
         mainCard.add(rentalsButton);
         mainCard.add(registerCarButton);
         mainCard.add(registerStoreButton);
+        mainCard.add(registerManagerButton);
         // TODO: Add all buttons to the mainCard
 
         rentalsButton.addActionListener(new ActionListener()
@@ -59,6 +62,11 @@ public class GManagerView extends JPanel
                 cardLayout.show(panel, "Store");
             }
         });
+        registerManagerButton.addActionListener(e ->
+        {
+            CardLayout cardLayout = (CardLayout) panel.getLayout();
+            cardLayout.show(panel, "Manager");
+        });
         // TODO: Add actionListeners for all buttons
 
         add(mainCard, "Main");
@@ -66,6 +74,7 @@ public class GManagerView extends JPanel
         add(rentalButtons, "Buttons");
         add(registerCar, "Car");
         add(registerStore, "Store");
+        add(registerManager, "Manager");
         // TODO: Add all the panels to the CardLayout
     }
 
