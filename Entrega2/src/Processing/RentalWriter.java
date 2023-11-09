@@ -189,9 +189,9 @@ public class RentalWriter {
             SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
             String OpformattedDate = dateFormat.format(store.getOpHour().getTime());
             String ClformattedDate = dateFormat.format(store.getCloseHour().getTime());
+            int openingDaysInt = store.opDays() & 0xFF;
             stringBuilder.append(store.getName()).append(",").append(store.getLocation()).append(",").append(
-                OpformattedDate).append(",").append(ClformattedDate).append(",").append(String.valueOf(store.opDays()));
-
+                OpformattedDate).append(",").append(ClformattedDate).append(",").append(Integer.toBinaryString(openingDaysInt));
             ArrayList<String> plates = new ArrayList<>();
             for (ArrayList<String> valueList : store.getInventory().values()) {
                 plates.addAll(valueList);

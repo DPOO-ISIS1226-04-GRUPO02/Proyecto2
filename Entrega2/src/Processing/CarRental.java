@@ -308,13 +308,15 @@ public class CarRental {
 		RentalWriter.addCar(carro);
 	} 
 
-	public static void newStore(String name, String location, Calendar openingTime, Calendar closingTime, 
+	public static boolean newStore(String name, String location, Calendar openingTime, Calendar closingTime, 
 		byte OpeningDays)
 	{
 		HashMap <String, ArrayList<String>> inventory = new HashMap<String, ArrayList<String>>();
+		if (stores.containsKey(name)) return false;
 		Store store = new Store(name, location, openingTime, closingTime, OpeningDays, inventory);
 		stores.put(name, store);
 		RentalWriter.addStore(store);
+		return true;
 	}
 
 	public static void changeVehicleStatus(String plate, byte status)
