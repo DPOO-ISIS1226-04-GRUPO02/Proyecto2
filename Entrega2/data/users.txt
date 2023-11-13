@@ -12,3 +12,4 @@ kennedy,localmanager1,2,Galetto Cars Kennedy
 engativa,localmanager2,2,Galetto Cars Engativá
 fontibon,localmanager3,2,Galetto Cars Fontibón
 admin,admin,3,null
+lmand,lmand,2,Galetto Cars Andino
