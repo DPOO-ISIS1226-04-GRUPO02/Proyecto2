@@ -19,7 +19,6 @@ public class MainInterface extends JFrame {
     private LManagerView lManagerView;
     private GManagerView gManagerView;
 
-    final private String separator = File.separator;
     final private String imgPath = "/Entrega2/data/logo.jpeg";
     private BufferedImage logo;
 

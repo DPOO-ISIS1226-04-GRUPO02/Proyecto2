@@ -6,7 +6,6 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.text.ParseException;
 
-import Processing.CarRental;
 import Processing.Users;
 import Model.User;
 
@@ -56,9 +55,7 @@ public class UserSelection extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     System.out.println("Login button clicked");
-                    String u = username.getText();
                     int access = Users.loadUser(username.getText(), password.getText()).getAccess();
-                    int num = access;
                     setVisible(false);
                     mi.loadView(access, username.getText(), password.getText());
                     mi.setVisible(true);

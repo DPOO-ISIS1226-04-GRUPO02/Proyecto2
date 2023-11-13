@@ -7,3 +7,4 @@ Seguro de Robo del Vehículo,90,Cobertura de robo del vehículo,0
 Seguro de Cancelación de Reserva,20,Cobertura de cancelación de reserva,0
 Seguro de Asistencia en el Camino,40,Cobertura de asistencia en el camino,0
 Seguro de Accidentes de Conductor,60,Cobertura de accidentes del conductor,0
+Seguro contra incendios forestales,25000,Cubre gastos contra el medio ambiente,true

@@ -559,7 +559,7 @@ public class RentalWriter {
         String filePath = "Entrega2" + separator + "data" +separator + "insurances.txt";
         try {
             FileWriter fileWriter = new FileWriter(filePath, true); // Modo adjunto al final del archivo
-            String insuranceEntry = insurance.getName() + "," + String.valueOf(insurance.getCost()) + "," + 
+            String insuranceEntry = "\n" + insurance.getName() + "," + String.valueOf(insurance.getCost()) + "," + 
                 insurance.getSpecification() + "," + Boolean.toString(insurance.isActive()) + System.lineSeparator();
             fileWriter.write(insuranceEntry);
             fileWriter.close();
