@@ -12,21 +12,7 @@ import java.util.Calendar;
 
 public class RegisterPersonalInformation extends JPanel{
 
-    private JTextField nameField;
-    private JTextField phoneField;
-    private JTextField emailField;
-    private JTextField dateBirthField;
-    private JTextField nationalityField;
-    private JTextField idPhotoPathField;
-    private JTextField licenceNumberField;
-    private JTextField licenceCountryField;
-    private JTextField licenceExpirationField;
-    private JTextField licencePhotoPathField;
-    private JTextField cardNumberField;
-    private JTextField cardCodeField;
-    private JTextField cardOwnerField;
-    private JTextField cardExpirationField;
-    private JTextField cardAddressField;
+   
 
     public RegisterPersonalInformation(String login, JFrame main, ClientView client)
     {
@@ -36,49 +22,49 @@ public class RegisterPersonalInformation extends JPanel{
         GridBagConstraints constraints = new GridBagConstraints();
 
         JLabel nameLabel = new JLabel("Nombre: ");
-        nameField = new JTextField(20);
+        JTextField nameField = new JTextField(20);
 
         JLabel phoneLabel = new JLabel("Celular: ");
-        phoneField = new JTextField(10);
+        JTextField phoneField = new JTextField(10);
 
         JLabel emailLabel = new JLabel("Email: ");
-        emailField = new JTextField(20);
+        JTextField emailField = new JTextField(20);
 
         JLabel dateBirthLabel = new JLabel("Fecha de Nacimiento: ");
-        dateBirthField = new JTextField("dd/mm/aaaa", 10);
+        JTextField dateBirthField = new JTextField("dd/mm/aaaa", 10);
 
         JLabel nationalityLabel = new JLabel("País de Nacimiento: ");
-        nationalityField = new JTextField(20);
+        JTextField nationalityField = new JTextField(20);
 
         JLabel idPhotoPathLabel = new JLabel("Id Photo Path: ");
-        idPhotoPathField = new JTextField(20);
+        JTextField idPhotoPathField = new JTextField(20);
 
         JLabel licenceNumberLabel = new JLabel("Número Licencia: ");
-        licenceNumberField = new JTextField(20);
+        JTextField licenceNumberField = new JTextField(20);
 
         JLabel licenceCountryLabel = new JLabel("País Licencia: ");
-        licenceCountryField = new JTextField(20);
+        JTextField licenceCountryField = new JTextField(20);
 
         JLabel licenceExpirationLabel = new JLabel("Fecha de Vencimiento Licencia: ");
-        licenceExpirationField = new JTextField("dd/mm/aaaa", 10);
+        JTextField licenceExpirationField = new JTextField("dd/mm/aaaa", 10);
 
         JLabel licencePhotoPathLabel = new JLabel("Licencia Photo Path:");
-        licencePhotoPathField = new JTextField(10);
+        JTextField licencePhotoPathField = new JTextField(10);
 
         JLabel cardNumberLabel = new JLabel("Número Tarjeta: ");
-        cardNumberField = new JTextField(20);
+        JTextField cardNumberField = new JTextField(20);
 
         JLabel cardCodeLabel = new JLabel("Código CVV: ");
-        cardCodeField = new JTextField(5);
+        JTextField cardCodeField = new JTextField(5);
 
         JLabel cardOwnerLabel = new JLabel("Nombre en la Tarjeta: ");
-        cardOwnerField = new JTextField(20);
+        JTextField cardOwnerField = new JTextField(20);
 
         JLabel cardExpirationLabel = new JLabel("Fecha de Vencimiento Tarjeta: ");
-        cardExpirationField = new JTextField("mm/aaaa", 10);
+        JTextField cardExpirationField = new JTextField("mm/aaaa", 10);
 
         JLabel cardAddressLabel = new JLabel("Dirección: ");
-        cardAddressField = new JTextField(20);
+        JTextField cardAddressField = new JTextField(20);
 
         constraints.gridx = 0;
         constraints.gridy = 0;
