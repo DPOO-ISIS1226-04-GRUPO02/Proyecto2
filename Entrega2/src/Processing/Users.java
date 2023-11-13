@@ -11,10 +11,16 @@ public class Users
 {
 	private static HashMap<String, User> logins;
 
-	public static void loadUsers() throws IOException, ParseException
-	{
-		logins = RentalLoader.usersInformation();
+	public static void loadUsers() {
+		try {
+			logins = RentalLoader.usersInformation();
+		} catch (IOException | ParseException ex) {
+			ex.printStackTrace(); // Imprimir detalles de la excepción
+			// Puedes lanzar una nueva excepción si lo deseas
+			throw new RuntimeException("Error al cargar los usuarios", ex);
+		}
 	}
+	
 	
 	public static User registerNewUser(String login, String password, int access, String workplace)
 	{

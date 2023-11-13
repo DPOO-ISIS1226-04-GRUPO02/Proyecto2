@@ -34,7 +34,7 @@ public class RegisterCar extends JPanel
         JComboBox<String> automaticOptions = new JComboBox<String>(booleanValues);
         JLabel categoryLabel = new JLabel("Seleccione la categoría del vehículo: ");
         JComboBox<String> categoryOptions = new JComboBox<String>(categories);
-        JLabel availableLabel = new JLabel("Ingrese el cuantos días se encontrará disponible el carro: ");
+        JLabel availableLabel = new JLabel("Ingrese en cuantos días se encontrará disponible el carro: ");
         JFormattedTextField availableText = new JFormattedTextField(integerFormat);
         availableText.setColumns(20);
         JLabel storeLabel = new JLabel("Seleccione la tienda a donde desea registrar el carro: ");
@@ -50,7 +50,9 @@ public class RegisterCar extends JPanel
             String color = colorText.getText();
             boolean isAutomatic = Boolean.parseBoolean((String) automaticOptions.getSelectedItem());
             String category = (String) categoryOptions.getSelectedItem();
-            int availableIn = (int) availableText.getValue();
+            long availableInLong = (long) availableText.getValue();
+            int availableIn = (int) availableInLong;
+
             String store = (String) storeOptions.getSelectedItem();
 
             CarRental.registerCar(brand, plate, model, color, isAutomatic, category, availableIn, store);

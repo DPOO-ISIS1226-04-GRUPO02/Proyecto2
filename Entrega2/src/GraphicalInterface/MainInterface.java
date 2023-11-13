@@ -20,13 +20,13 @@ public class MainInterface extends JFrame {
     private GManagerView gManagerView;
 
     final private String separator = File.separator;
-    final private String imgPath = separator + "data" + separator + "logo.jpeg";
+    final private String imgPath = "/Entrega2/data/logo.jpeg";
     private BufferedImage logo;
 
     MainInterface()
     {
         setTitle("Galetto Cars");
-        setSize(1000, 1200);
+        setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setResizable(false);
@@ -40,17 +40,20 @@ public class MainInterface extends JFrame {
             new ErrorDialog("La imagen del logo no fue encontrada!", this);
             logo = null;
         }
-        JPanel logoPanel = new JPanel() 
-        {
-            public void paint(Graphics g)
-            {
-                Graphics2D g2 = (Graphics2D) g;
-                int w = getWidth() - 270;
-                int h = getHeight() - 480;
-                g2.drawImage(logo, w/2, h/2, 270, 480, new Color(0xFF, 0xC3, 0x00), null);
+        JPanel logoPanel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+        
+                if (logo != null) {
+                    int x = (getWidth() - logo.getWidth()) / 2;
+                    int y = (getHeight() - logo.getHeight()) / 7;
+        
+                    g.drawImage(logo, x, y, this);
+                }
             }
         };
-        add(logoPanel, BorderLayout.WEST);
+        
+        add(logoPanel, BorderLayout.CENTER);
     }
 
     void loadView(int access, String username, String password)
@@ -58,31 +61,26 @@ public class MainInterface extends JFrame {
         try
         {
             CarRental.loadCarRental();
-        }
-        catch (IOException | ParseException ex)
-        {
-            new ErrorDialog("Hubo un error cargando los datos!\n" + ex.getLocalizedMessage(), this);
-        }
-        switch (access)
+            switch (access)
         {
             case 0:
                 clientView = new ClientView(username, this);
-                add(clientView, BorderLayout.CENTER);
+                add(clientView, BorderLayout.NORTH);
                 setVisible(true);
                 break;
             case 1:
                 employeeView = new EmployeeView(username, password, this);
-                add(employeeView, BorderLayout.CENTER);
+                add(employeeView, BorderLayout.NORTH);
                 setVisible(true);
                 break;
             case 2:
                 lManagerView = new LManagerView(username, password, this);
-                add(lManagerView, BorderLayout.CENTER);
+                add(lManagerView, BorderLayout.NORTH);
                 setVisible(true);
                 break;
             case 3:
                 gManagerView = new GManagerView(username, password, this);
-                add(gManagerView, BorderLayout.CENTER);
+                add(gManagerView, BorderLayout.NORTH);
                 setVisible(true);
                 break;
             default:
@@ -90,6 +88,12 @@ public class MainInterface extends JFrame {
                 setVisible(true);
                 break;
         }
+        }
+        catch (IOException | ParseException ex)
+        {
+            new ErrorDialog("Hubo un error cargando los datos!\n" + ex.getLocalizedMessage(), this);
+        }
+        
     }
 
 }

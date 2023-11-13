@@ -1,28 +1,22 @@
 package GraphicalInterface;
 
-import java.util.ArrayList;
-
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
 import javax.swing.*;
 
-public class GManagerView extends JPanel
-{
+public class GManagerView extends JPanel {
     private JPanel rentalButtons = new JPanel();
 
-    GManagerView(String login, String password, JFrame main) 
-    {
+    GManagerView(String login, String password, JFrame main) {
         JPanel panel = this;
         GetPastRentals rentals = new GetPastRentals(main, this);
         RegisterCar registerCar = new RegisterCar(this, main);
         RegisterStore registerStore = new RegisterStore(this, main);
         RegisterManager registerManager = new RegisterManager(this, main);
-        
-        // TODO: List all the panels for the possible options
 
         setLayout(new CardLayout());
         JPanel mainCard = new JPanel();
@@ -30,45 +24,38 @@ public class GManagerView extends JPanel
         JButton registerCarButton = new JButton("Registrar un nuevo carro");
         JButton registerStoreButton = new JButton("Registrar una nueva sede");
         JButton registerManagerButton = new JButton("Registrar un nuevo gerente local");
-        // TODO: List all the buttons and its corresponding panels
 
         mainCard.setLayout(new FlowLayout());
         mainCard.add(rentalsButton);
         mainCard.add(registerCarButton);
         mainCard.add(registerStoreButton);
         mainCard.add(registerManagerButton);
-        // TODO: Add all buttons to the mainCard
 
-        rentalsButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        rentalsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 CardLayout cardLayout = (CardLayout) panel.getLayout();
                 cardLayout.show(panel, "Rentals");
             }
         });
-        registerCarButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+
+        registerCarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 CardLayout cardLayout = (CardLayout) panel.getLayout();
                 cardLayout.show(panel, "Car");
             }
         });
-        registerStoreButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+
+        registerStoreButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 CardLayout cardLayout = (CardLayout) panel.getLayout();
                 cardLayout.show(panel, "Store");
             }
         });
-        registerManagerButton.addActionListener(e ->
-        {
+
+        registerManagerButton.addActionListener(e -> {
             CardLayout cardLayout = (CardLayout) panel.getLayout();
             cardLayout.show(panel, "Manager");
         });
-        // TODO: Add actionListeners for all buttons
 
         add(mainCard, "Main");
         add(rentals, "Rentals");
@@ -76,45 +63,55 @@ public class GManagerView extends JPanel
         add(registerCar, "Car");
         add(registerStore, "Store");
         add(registerManager, "Manager");
-        // TODO: Add all the panels to the CardLayout
     }
 
-    void showRentalsPanel(ArrayList<String> result)
-    {
-        JPanel panel = this;
-        ArrayList<JButton> rentalsList = new ArrayList<JButton>();
-        for (int k = 1; k < result.size(); k += 4)
-        {
-            JButton rentalButton = new JButton(result.get(k+1));
+    void showRentalsPanel(ArrayList<String> result) {
+        // Crear un nuevo JFrame para mostrar las rentas
+        JFrame rentalsFrame = new JFrame("Historial de Rentas");
+        rentalsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Crear un JPanel para contener los botones y otros componentes
+        JPanel rentalsPanel = new JPanel();
+
+        ArrayList<JButton> rentalsList = new ArrayList<>();
+        for (int k = 1; k < result.size(); k += 4) {
+            JButton rentalButton = new JButton(result.get(k + 1));
             rentalsList.add(rentalButton);
         }
-        rentalButtons.setLayout(new GridLayout(rentalsList.size() + 1, 1));
+
+        // Configurar el layout del panel de botones
+        rentalsPanel.setLayout(new GridLayout(rentalsList.size() + 1, 1));
+
+        // Añadir el botón "Volver"
         JButton done = new JButton("Volver");
-        done.addActionListener(e ->
-        {
-            CardLayout cardLayout = (CardLayout) panel.getLayout();
-            cardLayout.show(panel, "Rentals");
-        });
-        rentalButtons.add(done);
-        for (int i = 0; i < rentalsList.size(); i++)
-        {
+        done.addActionListener(e -> rentalsFrame.dispose()); // Cierra el nuevo frame al hacer clic en "Volver"
+        rentalsPanel.add(done);
+
+        // Añadir los botones de rentas
+        for (int i = 0; i < rentalsList.size(); i++) {
             JButton currentButton = rentalsList.get(i);
-            ArrayList<String> information = new ArrayList<String>();
-            information.add(result.get(1 + i * 4));
-            information.add(result.get(2 + i * 4));
-            information.add(result.get(3 + i * 4));
-            information.add(result.get(4 + i * 4));
-            currentButton.addActionListener(e ->
-            {
-                new PastRental(information, panel);
+
+            // ... Lógica para obtener la información del alquiler ...
+
+            currentButton.addActionListener(e -> {
+                // ... Lógica para mostrar la información del alquiler en un nuevo panel o frame ...
             });
-            rentalButtons.add(currentButton);
+
+            rentalsPanel.add(currentButton);
         }
+
+        // Añadir el panel de botones al nuevo frame
+        rentalsFrame.add(rentalsPanel);
+
+        // Configurar tamaño, visibilidad y otras propiedades del nuevo frame
+        rentalsFrame.setSize(400, 300); // Ajusta el tamaño según tus necesidades
+        rentalsFrame.setLocationRelativeTo(null); // Centra el frame en la pantalla
+        rentalsFrame.setVisible(true);
     }
 
-    void showMain()
-    {
+    void showMain() {
         CardLayout cardLayout = (CardLayout) getLayout();
         cardLayout.show(this, "Main");
     }
 }
+

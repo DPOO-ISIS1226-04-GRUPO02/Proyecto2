@@ -304,7 +304,15 @@ public class CarRental {
 		carro.setStatus((byte) 0);
 		cars.put(plate, carro);
 		Store st = stores.get(store);
-		st.getInventory().get(category).add(plate);
+		if (st.getInventory().containsKey(category)){
+			st.getInventory().get(category).add(plate);
+		}
+		else{
+			st.getInventory().put(category, new ArrayList<String>());
+			st.getInventory().get(category).add(plate);
+			RentalWriter.changeStoreInformation(st);
+
+		}
 		RentalWriter.addCar(carro);
 	} 
 
@@ -331,11 +339,21 @@ public class CarRental {
 
 	public static ArrayList<String> getPastRentals(Car car)
 	{
-		ArrayList<Rental> listRentals = rentals.get(car);
+		String plate = car.getPlate();
+		Set<Car> carros =  rentals.keySet();
+		Car c = null;
+		for (Car carro: carros){
+			String placa = carro.getPlate();
+			if (plate.equals(placa)){
+				c = carro;
+			}
+		}
+		ArrayList<Rental> listRentals = rentals.get(c);
 		ArrayList<String> result = new ArrayList<String>();
 		int i = 1;
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-		result.add("Información completa de las rentas pasadas en ./data/rentals/" + car.getPlate());
+		result.add("Información completa de las rentas pasadas en Entrega2/data/rentals/" + car.getPlate());
+		if (c != null){
 		for (Rental rental: listRentals)
 		{
 			result.add(String.format("%d", i));
@@ -344,7 +362,7 @@ public class CarRental {
 			String formattedDateIn = simpleDateFormat.format(rental.getReturn().getTime());
 			result.add(String.format("%s", formattedDateIn));
 			result.add(String.format("%d", rental.getFinalCharge()));
-		}
+		}}
 		return result;
 	}
 
