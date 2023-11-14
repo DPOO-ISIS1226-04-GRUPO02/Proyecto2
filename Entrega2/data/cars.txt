@@ -1,4 +1,4 @@
-Toyota,ABC123,Corolla,Rojo,2023-10-16,1,Compacto,0
+Toyota,ABC123,Corolla,Rojo,2023-11-14,0,Compacto,0
 Honda,XYZ456,Civic,Azul,2023-10-17,0,Compacto,0
 Ford,DEF789,Focus,Plateado,2023-10-18,1,Compacto,0
 Chevrolet,GHI101,Malibu,Negro,2023-10-19,0,Sedán,0
