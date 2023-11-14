@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -338,53 +339,30 @@ public class RentalWriter {
         }    
     }
 
-    public static void changeClientInformation (Client person){
+    public static void changeClientInformation(Client person) {
         String username = person.getLogin();
+        String separator = File.separator;
+    
+        // Client information
         String filePath = "Entrega2" + separator + "data" + separator + "clients" + separator + username + separator + "clientInfo.txt";
-        try {
-        File file = new File(filePath);
-        FileWriter fr = new FileWriter(file, false);
-        fr.write("");
-        fr.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            FileWriter fileWriter = new FileWriter(filePath, true);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+    
+        try (PrintWriter writer = new PrintWriter(filePath)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String dateString = dateFormat.format(person.getDateBirth().getTime());
-            String content = person.getName() + ',' + person.getPhone() + ',' + person.getEmail() + ',' + 
-                dateString + ',' + person.getNationality() + ',' + person.getLogin();
-            bufferedWriter.write(content);
-            bufferedWriter.close();
-
-        } catch (IOException e) {
+            String content = person.getName() + ',' + person.getPhone() + ',' + person.getEmail() + ',' +
+                    dateString + ',' + person.getNationality() + ',' + person.getLogin();
+            writer.print(content);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        String id = "Entrega2" + separator + "data" + separator + "clients" + separator + username + separator + "identification.jpg";
-        String identification = person.getIdPhotoPath();
-        try {
-            File fotoId = new File(id);
-            fotoId.delete();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        Path source = Paths.get(identification);
-        Path target = Paths.get("Entrega2" + separator + "data" + separator + "clients" + separator + username + separator +
-            "identification.jpg");
-
-        try {
-            Files.copy(source, target);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } 
+    
+        // License information
         String filePath2 = "Entrega2" + separator + "data" + separator + "clients" + separator + username + separator + "licenceInfo.txt";
         try {
-        File file = new File(filePath);
-        FileWriter fr = new FileWriter(file, false);
-        fr.write("");
-        fr.close();
+            File file2 = new File(filePath2);
+            FileWriter fr2 = new FileWriter(file2, false);
+            fr2.write("");
+            fr2.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -397,34 +375,19 @@ public class RentalWriter {
             String content2 = licence.getNumber() + ',' + licence.getCountry() + ',' + dateString2;
             bufferedWriter.write(content2);
             bufferedWriter.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        String li = "Entrega2" + separator + "data" + separator + "clients" + separator + username + separator + "license.jpg";
-        String licence = person.getLicence().getPhotoPath();
+    
+        
+    
+        // Payment information
+        String filePath3 = "Entrega2" + separator + "data" + separator + "clients" + separator + username + separator + "paymentInfo.txt";
         try {
-            File fotoId = new File(li);
-            fotoId.delete();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        Path source2 = Paths.get(licence);
-        Path target2 = Paths.get("Entrega2" + separator + "data" + separator + "clients" + separator + username + separator + "license.jpg");
-
-        try {
-            Files.copy(source2, target2);
-        } catch (IOException e) {
-            e.printStackTrace();
-    }
-
-    String filePath3 = "Entrega2" + separator + "data" + separator + "clients" + separator + username + separator + "paymentInfo.txt";
-        try {
-        File file = new File(filePath3);
-        FileWriter fr = new FileWriter(file, false);
-        fr.write("");
-        fr.close();
+            File file3 = new File(filePath3);
+            FileWriter fr3 = new FileWriter(file3, false);
+            fr3.write("");
+            fr3.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -434,15 +397,15 @@ public class RentalWriter {
             Payment payment = person.getPayment();
             SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM");
             String dateString3 = dateFormat3.format(payment.getExpiration().getTime());
-            String content3 = payment.getNumber() + ',' + dateString3 + ',' + String.valueOf(payment.getCode()) + 
-                ',' + payment.getOwner() + ',' + payment.getAddress();
+            String content3 = payment.getNumber() + ',' + dateString3 + ',' + String.valueOf(payment.getCode()) +
+                    ',' + payment.getOwner() + ',' + payment.getAddress();
             bufferedWriter.write(content3);
             bufferedWriter.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-}
+    }
+    
 
     public static void changeRentalInformation(Rental rental){
         String plate = rental.getCar().getPlate();
