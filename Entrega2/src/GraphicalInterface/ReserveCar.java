@@ -2,7 +2,6 @@ package GraphicalInterface;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,40 +83,37 @@ public class ReserveCar extends JPanel
         JButton accept = new JButton("Accept");
         accept.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent e)
-            {
-                String initialDateString = initialDate.getText(); 
-                SimpleDateFormat sdf = new SimpleDateFormat("AA-MM-DD/HH:MM");
+            public void actionPerformed(ActionEvent e) {
+                String initialDateString = initialDate.getText();
+                SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd/HH:mm");
                 Calendar initialCalendar = Calendar.getInstance();
-                try
-                {
-                    Date initialDate2 = (Date) sdf.parse(initialDateString); 
+                try {
+                    java.util.Date initialDate2 = sdf.parse(initialDateString);
                     initialCalendar.setTime(initialDate2);
-                } 
-                catch (ParseException ex) 
-                {
-                    new ErrorDialog("El formato de la fecha para recoger el vehículo es erroneo.", main);
+                } catch (ParseException ex) {
+                    new ErrorDialog("El formato de la fecha para recoger el vehículo es erróneo.", main);
                     return;
                 }
                 String returnDateString = returnDate.getText();
                 Calendar returnCalendar = Calendar.getInstance();
-                try
-                {
-                    Date returnDate2 = (Date) sdf.parse(returnDateString); 
+                try {
+                    java.util.Date returnDate2 = sdf.parse(returnDateString);
                     returnCalendar.setTime(returnDate2);
-                }
-                catch (ParseException ex)
-                {
-                    new ErrorDialog("El formato de la fecha para devolver el vehículo es erroneo.", main);
+                } catch (ParseException ex) {
+                    new ErrorDialog("El formato de la fecha para devolver el vehículo es erróneo.", main);
                     return;
                 }
                 String category_ = (String) category.getSelectedItem();
                 String origin_ = (String) origin.getSelectedItem();
                 String destination_ = (String) destination.getSelectedItem();
                 String response = CarRental.reserveCar(login, category_, origin_, destination_, initialCalendar, returnCalendar);
-                if (!response.equals(null)) new ErrorDialog(response, main); 
-                else client.showMain();
+                if (response != null) {
+                    new ErrorDialog(response, main);
+                } else {
+                    client.showMain();
+                }
             }
+            
         });
         add(accept, constraints);
     }

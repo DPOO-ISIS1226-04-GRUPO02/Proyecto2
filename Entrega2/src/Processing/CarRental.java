@@ -184,7 +184,7 @@ public class CarRental {
 		Client person = getClient(login);
 		ArrayList<String> categoryList = originStore.getInventory().get(category);
 		if (categoryList.size() == 0) return "No hay carros en la categoría seleccionada.";
-		if (!person.getActiveRental().equals(null)) return "Usted ya tiene una renta activa.";
+		if (!(person.getActiveRental()== null)) return "Usted ya tiene una renta activa.";
 		int i = 0;
 		boolean found = false;
 		Car car = null;
@@ -193,7 +193,7 @@ public class CarRental {
 			String plate = categoryList.get(i);
 			byte status = getCar(plate).getStatus();
 			Calendar availableIn = getCar(plate).getAvailableDate();
-			if (status == (byte) 0 && availableIn.before(pickUpDateTime))
+			if (status == (byte) 0)
 			{
 				found = true;
 				car = getCar(plate);
@@ -201,7 +201,7 @@ public class CarRental {
 			}
 			i += 1;
 		}
-		if (car.equals(null)) return "No hay carros de esta categoría disponibles para la renta en la sede " + origin;
+		if (car == null) return "No hay carros de esta categoría disponibles para la renta en la sede " + origin;
 		int base = categories.get(category);
 		Rental newRental = new Rental(person, car, base, new ArrayList<Insurance>(), originStore, 
 			destinationStore, pickUpDateTime, returnDateTime, new ArrayList<Licence>(), new ArrayList<Extra>(), true);
@@ -258,7 +258,7 @@ public class CarRental {
 	public static String addExtra(String login, String type, int cost, String specification)
 	{
 		Rental active = clients.get(login).getActiveRental();
-		if (active.equals(null)) return "Primero debe crear una reserva para poder añadir extras";
+		if (active == null) return "Primero debe crear una reserva para poder añadir extras";
 		ArrayList<Extra> extras = active.getExtras();
 		extras.add(new Extra(type, cost, specification));
 		active.setExtras(extras);
