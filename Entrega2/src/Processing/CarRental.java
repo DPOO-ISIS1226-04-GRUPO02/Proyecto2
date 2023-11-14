@@ -121,6 +121,9 @@ public class CarRental {
 	{
 		return insurances.keySet();
 	}
+	public static Insurance getInsurance(String insurance){
+		return insurances.get(insurance);
+	}
  
 	public static void addInsurance(String name, int cost, String specs) 
 	{
@@ -192,7 +195,6 @@ public class CarRental {
 		{
 			String plate = categoryList.get(i);
 			byte status = getCar(plate).getStatus();
-			Calendar availableIn = getCar(plate).getAvailableDate();
 			if (status == (byte) 0)
 			{
 				found = true;
