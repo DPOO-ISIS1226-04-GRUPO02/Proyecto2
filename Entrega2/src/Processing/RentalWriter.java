@@ -214,17 +214,27 @@ public class RentalWriter {
     public static void addClient(Client client) {
         String username = client.getLogin();
         String folderPath = "Entrega2" + separator + "data" + separator + "clients" + separator + username + separator;
-
+    
         File folder = new File(folderPath);
-
+    
         if (!folder.exists()) {
             boolean result = folder.mkdirs();
             if (result) {
+                // Client information
                 String filePath = folderPath + "clientInfo.txt";
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String dateString = dateFormat.format(client.getDateBirth().getTime());
-                String content = client.getName() + ',' + client.getPhone() + ',' + client.getEmail() + ',' + 
-                    dateString + ',' + client.getNationality() + ',' + client.getLogin();
+    
+                StringBuilder contentBuilder = new StringBuilder();
+                contentBuilder.append(client.getName()).append(',')
+                        .append(client.getPhone()).append(',')
+                        .append(client.getEmail()).append(',')
+                        .append(dateString).append(',')
+                        .append(client.getNationality()).append(',')
+                        .append(client.getLogin());
+    
+                String content = contentBuilder.toString();
+    
                 try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true))) {
                     bufferedWriter.append(content);
                     bufferedWriter.newLine();
@@ -232,21 +242,32 @@ public class RentalWriter {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+    
+                // Identification
                 String sourceImagePath = client.getIdPhotoPath();
                 Path source = Paths.get(sourceImagePath);
                 Path target = Paths.get(folderPath + "identification.jpg");
-
+    
                 try {
                     Files.copy(source, target);
                     System.out.println("\nIdentificación cargada con éxito.");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+    
+                // License information
                 String filePath2 = folderPath + "licenceInfo.txt";
                 Licence licence = client.getLicence();
                 SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM");
                 String dateString2 = dateFormat2.format(licence.getExpiration().getTime());
-                String content2 = licence.getNumber() + ',' + licence.getCountry() + ',' + dateString2;
+    
+                StringBuilder contentBuilder2 = new StringBuilder();
+                contentBuilder2.append(licence.getNumber()).append(',')
+                        .append(licence.getCountry()).append(',')
+                        .append(dateString2);
+    
+                String content2 = contentBuilder2.toString();
+    
                 try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath2, true))) {
                     bufferedWriter.append(content2);
                     bufferedWriter.newLine();
@@ -254,22 +275,34 @@ public class RentalWriter {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+    
+                // License photo
                 String sourceImagePath2 = licence.getPhotoPath();
                 Path source2 = Paths.get(sourceImagePath2);
                 Path target2 = Paths.get(folderPath + "license.jpg");
-
+    
                 try {
                     Files.copy(source2, target2);
                     System.out.println("\nLicencia cargada con éxito.");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+    
+                // Payment information
                 String filePath3 = folderPath + "paymentInfo.txt";
                 Payment payment = client.getPayment();
                 SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM");
                 String dateString3 = dateFormat3.format(payment.getExpiration().getTime());
-                String content3 = payment.getNumber() + ',' + dateString3 + ',' + String.valueOf(payment.getCode()) + 
-                    ',' + payment.getOwner() + ',' + payment.getAddress();
+    
+                StringBuilder contentBuilder3 = new StringBuilder();
+                contentBuilder3.append(payment.getNumber()).append(',')
+                        .append(dateString3).append(',')
+                        .append(payment.getCode()).append(',')
+                        .append(payment.getOwner()).append(',')
+                        .append(payment.getAddress());
+    
+                String content3 = contentBuilder3.toString();
+    
                 try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath3, true))) {
                     bufferedWriter.append(content3);
                     bufferedWriter.newLine();
@@ -277,10 +310,10 @@ public class RentalWriter {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         }
     }
+    
 
     public static void newRental(Rental rental){
         String plate = rental.getCar().getPlate();
