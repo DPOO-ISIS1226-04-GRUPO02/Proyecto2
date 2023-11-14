@@ -349,8 +349,16 @@ public class RentalWriter {
         try (PrintWriter writer = new PrintWriter(filePath)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String dateString = dateFormat.format(person.getDateBirth().getTime());
-            String content = person.getName() + ',' + person.getPhone() + ',' + person.getEmail() + ',' +
-                    dateString + ',' + person.getNationality() + ',' + person.getLogin();
+            StringBuilder contentBuilder = new StringBuilder();
+            contentBuilder.append(person.getName()).append(',')
+                    .append(person.getPhone()).append(',')
+                    .append(person.getEmail()).append(',')
+                    .append(dateString).append(',')
+                    .append(person.getNationality()).append(',')
+                    .append(person.getLogin());
+
+            String content = contentBuilder.toString();
+
             writer.print(content);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -372,7 +380,13 @@ public class RentalWriter {
             Licence licence = person.getLicence();
             SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM");
             String dateString2 = dateFormat2.format(licence.getExpiration().getTime());
-            String content2 = licence.getNumber() + ',' + licence.getCountry() + ',' + dateString2;
+            StringBuilder contentBuilder2 = new StringBuilder();
+            contentBuilder2.append(licence.getNumber()).append(',')
+                    .append(licence.getCountry()).append(',')
+                    .append(dateString2);
+
+            String content2 = contentBuilder2.toString();
+
             bufferedWriter.write(content2);
             bufferedWriter.close();
         } catch (IOException e) {
@@ -397,8 +411,15 @@ public class RentalWriter {
             Payment payment = person.getPayment();
             SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM");
             String dateString3 = dateFormat3.format(payment.getExpiration().getTime());
-            String content3 = payment.getNumber() + ',' + dateString3 + ',' + String.valueOf(payment.getCode()) +
-                    ',' + payment.getOwner() + ',' + payment.getAddress();
+            StringBuilder contentBuilder = new StringBuilder();
+            contentBuilder.append(payment.getNumber()).append(',')
+                    .append(dateString3).append(',')
+                    .append(payment.getCode()).append(',')
+                    .append(payment.getOwner()).append(',')
+                    .append(payment.getAddress());
+
+            String content3 = contentBuilder.toString();
+
             bufferedWriter.write(content3);
             bufferedWriter.close();
         } catch (IOException e) {
