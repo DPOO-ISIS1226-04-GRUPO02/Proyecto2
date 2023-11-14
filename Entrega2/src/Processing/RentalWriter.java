@@ -429,7 +429,7 @@ public class RentalWriter {
             e.printStackTrace();
         }
         try {
-            FileWriter fileWriter = new FileWriter(filePath, true);
+            FileWriter fileWriter = new FileWriter(filePath3, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             Payment payment = person.getPayment();
             SimpleDateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM");
